@@ -5,6 +5,7 @@
 #include <GL/glfw.h>
 
 #include "Window.h"
+#include "Camera.h"
 #include "cs455Utils.h"
 
 using namespace std;
@@ -25,6 +26,7 @@ Window::Window(void)
 {
 	glfwInit();
 
+	lastTime = timeElapsed = 0.0;
 }
 
 Window::~Window(void)
@@ -40,6 +42,10 @@ bool Window::Open(void)
 
 	glfwSetWindowSizeCallback(ResizeCallback);
 	glfwSetKeyCallback(KeyboardCallback);
+	glfwSetWindowTitle("Snowman Apocalypse");
+
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
 
 	return true;
 }
@@ -47,12 +53,84 @@ bool Window::Open(void)
 void Window::EnterMainLoop(void)
 {
 	bool running = true;
+	double currentTime = 0.0;
 
 	while (running)
 	{
-		// redraw();
+		currentTime = glfwGetTime();
+		timeElapsed = currentTime - lastTime;
+		lastTime = currentTime;
 
-		if (KEY_DOWN(GLFW_KEY_ESC))
-			running = false;
+		Camera::GetInstance()->PollKeyboard();
+
+		redraw();
 	}
+}
+
+void Window::redraw(void)
+{
+	//  Clear screen and Z-buffer
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	gluPerspective(90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 10.0);
+
+	Camera::GetInstance()->PollKeyboard();
+	Camera::GetInstance()->Update(timeElapsed);
+	Camera::GetInstance()->Use();
+
+	renderEnvironment();
+
+	glFlush();
+	glfwSwapBuffers();
+}
+
+void Window::renderEnvironment(void)
+{
+	glBegin(GL_QUADS);
+		glColor3f(   1.0,  1.0, 1.0 );
+		glVertex3f(  0.5, -0.5, 0.5 );
+		glVertex3f(  0.5,  0.5, 0.5 );
+		glVertex3f( -0.5,  0.5, 0.5 );
+		glVertex3f( -0.5, -0.5, 0.5 );
+	glEnd();
+ 
+	// Purple side - RIGHT
+	glBegin(GL_QUADS);
+		glColor3f(  1.0,  0.0,  1.0 );
+		glVertex3f( 0.5, -0.5, -0.5 );
+		glVertex3f( 0.5,  0.5, -0.5 );
+		glVertex3f( 0.5,  0.5,  0.5 );
+		glVertex3f( 0.5, -0.5,  0.5 );
+	glEnd();
+ 
+	// Green side - LEFT
+	glBegin(GL_QUADS);
+		glColor3f(   0.0,  1.0,  0.0 );
+		glVertex3f( -0.5, -0.5,  0.5 );
+		glVertex3f( -0.5,  0.5,  0.5 );
+		glVertex3f( -0.5,  0.5, -0.5 );
+		glVertex3f( -0.5, -0.5, -0.5 );
+	glEnd();
+ 
+	// Blue side - TOP
+	glBegin(GL_QUADS);
+		glColor3f(   0.0,  0.0,  1.0 );
+		glVertex3f(  0.5,  0.5,  0.5 );
+		glVertex3f(  0.5,  0.5, -0.5 );
+		glVertex3f( -0.5,  0.5, -0.5 );
+		glVertex3f( -0.5,  0.5,  0.5 );
+	glEnd();
+ 
+	// Red side - BOTTOM
+	glBegin(GL_QUADS);
+		glColor3f(   1.0,  0.0,  0.0 );
+		glVertex3f(  0.5, -0.5, -0.5 );
+		glVertex3f(  0.5, -0.5,  0.5 );
+		glVertex3f( -0.5, -0.5,  0.5 );
+		glVertex3f( -0.5, -0.5, -0.5 );
+	glEnd();
+ 
 }

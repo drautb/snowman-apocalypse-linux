@@ -5,6 +5,7 @@
 #include <GL/glfw.h>
 
 #include "Keyboard.h"
+#include "Camera.h"
 #include "cs455Utils.h"
 
 using namespace Eigen;
@@ -24,13 +25,14 @@ private:
 	 * Class constants
 	 */
 	const static int WINDOW_WIDTH			= 800;
-	const static int WINDOW_HEIGHT			= 480;
+	const static int WINDOW_HEIGHT			= 600;
 
 private:
+
 	/**
 	 * Other Members
 	 */
-	
+	double lastTime, timeElapsed;
 
 public:
 	/**
@@ -49,5 +51,11 @@ public:
 	bool Open(void);
 
 	void EnterMainLoop(void);
+
+	/**
+	 * Rendering Methods
+	 */
+	void redraw();
+	void renderEnvironment();
 };
 
