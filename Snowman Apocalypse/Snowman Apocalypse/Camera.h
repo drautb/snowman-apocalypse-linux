@@ -17,7 +17,7 @@ private:
 	float					xRotVel, yRotVel, zRotVel;
 
 
-private:
+private: 
 	/**
 	 * Private Constructor/Destructor for singleton
 	 */
@@ -30,6 +30,7 @@ public:
 	void Zero(void);
 
 	void PollKeyboard();
+	void TrackPoint(float x, float y, float z);
 
 	void Update(float deltaTime);
 	void Use(void);

@@ -8,6 +8,9 @@
 #include "Camera.h"
 #include "cs455Utils.h"
 
+#include "World.h"
+#include "Calvin.h"
+
 using namespace Eigen;
 
 void GLFWCALL ResizeCallback(int width, int height);
@@ -20,7 +23,7 @@ void GLFWCALL ResizeCallback(int width, int height);
  */
 class Window
 {
-private:
+public:
 	/**
 	 * Class constants
 	 */
@@ -32,7 +35,10 @@ private:
 	/**
 	 * Other Members
 	 */
-	double lastTime, timeElapsed;
+	float									lastTime, timeElapsed;
+
+	World									gameWorld;
+	Calvin									calvin;
 
 public:
 	/**
@@ -49,8 +55,11 @@ public:
 	 * Other Methods
 	 */
 	bool Open(void);
-
 	void EnterMainLoop(void);
+
+private: 
+
+	void update();
 
 	/**
 	 * Rendering Methods

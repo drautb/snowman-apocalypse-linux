@@ -7,11 +7,16 @@
 
 Camera::Camera(void)
 {
-	velModifier = 0.001f;
+	velModifier = 0.005f;
 	maxVelocity = 1.5f;
 	minVelocity = -1.5f;
 
 	Zero();
+
+	xRot = 5.0f;
+	xPos = 5.0f;
+	yPos = 2.0f;
+	zPos = 5.0f;
 }
 
 Camera::~Camera(void)
@@ -43,6 +48,32 @@ void Camera::PollKeyboard()
 		yPosVel -= velModifier;
 	else if (KEY_DOWN(GLFW_KEY_UP))
 		yPosVel += velModifier;
+
+	if (KEY_DOWN(GLFW_KEY_PAGEUP))
+		zPosVel -= velModifier;
+	else if (KEY_DOWN(GLFW_KEY_PAGEDOWN))
+		zPosVel += velModifier;
+}
+
+void Camera::TrackPoint(float x, float y, float z)
+{
+	if (abs(xPos - x) > 0.1f)
+	{
+		if (xPos < x) xPos += velModifier;
+		else if (xPos > x) xPos -= velModifier;
+	}
+
+	if (abs(yPos - y) > 0.1f)
+	{
+		if (yPos < y) yPos += velModifier;
+		else if (yPos > y) yPos -= velModifier;
+	}
+
+	if (abs(zPos - z) > 0.1f)
+	{
+		if (zPos < z) zPos += velModifier;
+		else if (zPos > z) zPos -= velModifier;
+	}
 }
 
 void Camera::Update(float deltaTime)

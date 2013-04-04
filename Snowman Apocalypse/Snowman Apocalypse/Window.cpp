@@ -44,8 +44,13 @@ bool Window::Open(void)
 	glfwSetKeyCallback(KeyboardCallback);
 	glfwSetWindowTitle("Snowman Apocalypse");
 
+	glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
+
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
+
+	gameWorld.LoadTextures();
+	calvin.LoadTextures();
 
 	return true;
 }
@@ -58,30 +63,35 @@ void Window::EnterMainLoop(void)
 	while (running)
 	{
 		currentTime = glfwGetTime();
-		timeElapsed = currentTime - lastTime;
-		lastTime = currentTime;
+		timeElapsed = (float)(currentTime - lastTime);
+		lastTime = (float)currentTime;
 
-		Camera::GetInstance()->PollKeyboard();
-
+		update();
 		redraw();
 	}
+}
+
+void Window::update()
+{
+	calvin.Update(timeElapsed);
+
+	//Camera::GetInstance()->PollKeyboard();
+	Camera::GetInstance()->TrackPoint(calvin.x(), 1.0f, 2.15f);
+	Camera::GetInstance()->Update(timeElapsed);
 }
 
 void Window::redraw(void)
 {
 	//  Clear screen and Z-buffer
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	
+
+	Camera::GetInstance()->Use();
+	renderEnvironment();	
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
 	gluPerspective(90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 10.0);
-
-	Camera::GetInstance()->PollKeyboard();
-	Camera::GetInstance()->Update(timeElapsed);
-	Camera::GetInstance()->Use();
-
-	renderEnvironment();
 
 	glFlush();
 	glfwSwapBuffers();
@@ -89,48 +99,6 @@ void Window::redraw(void)
 
 void Window::renderEnvironment(void)
 {
-	glBegin(GL_QUADS);
-		glColor3f(   1.0,  1.0, 1.0 );
-		glVertex3f(  0.5, -0.5, 0.5 );
-		glVertex3f(  0.5,  0.5, 0.5 );
-		glVertex3f( -0.5,  0.5, 0.5 );
-		glVertex3f( -0.5, -0.5, 0.5 );
-	glEnd();
- 
-	// Purple side - RIGHT
-	glBegin(GL_QUADS);
-		glColor3f(  1.0,  0.0,  1.0 );
-		glVertex3f( 0.5, -0.5, -0.5 );
-		glVertex3f( 0.5,  0.5, -0.5 );
-		glVertex3f( 0.5,  0.5,  0.5 );
-		glVertex3f( 0.5, -0.5,  0.5 );
-	glEnd();
- 
-	// Green side - LEFT
-	glBegin(GL_QUADS);
-		glColor3f(   0.0,  1.0,  0.0 );
-		glVertex3f( -0.5, -0.5,  0.5 );
-		glVertex3f( -0.5,  0.5,  0.5 );
-		glVertex3f( -0.5,  0.5, -0.5 );
-		glVertex3f( -0.5, -0.5, -0.5 );
-	glEnd();
- 
-	// Blue side - TOP
-	glBegin(GL_QUADS);
-		glColor3f(   0.0,  0.0,  1.0 );
-		glVertex3f(  0.5,  0.5,  0.5 );
-		glVertex3f(  0.5,  0.5, -0.5 );
-		glVertex3f( -0.5,  0.5, -0.5 );
-		glVertex3f( -0.5,  0.5,  0.5 );
-	glEnd();
- 
-	// Red side - BOTTOM
-	glBegin(GL_QUADS);
-		glColor3f(   1.0,  0.0,  0.0 );
-		glVertex3f(  0.5, -0.5, -0.5 );
-		glVertex3f(  0.5, -0.5,  0.5 );
-		glVertex3f( -0.5, -0.5,  0.5 );
-		glVertex3f( -0.5, -0.5, -0.5 );
-	glEnd();
- 
+	gameWorld.Render();
+	calvin.Render();
 }

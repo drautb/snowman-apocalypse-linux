@@ -66,16 +66,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Calvin.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Calvin.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="cs455Utils.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Matrix455.h" />
+    <ClInclude Include="Vector455.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
