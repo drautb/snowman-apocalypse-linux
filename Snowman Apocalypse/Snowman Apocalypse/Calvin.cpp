@@ -3,6 +3,7 @@
 #include "cs455Utils.h"
 #include "Window.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 #include "World.h"
 #include "Calvin.h"
 
@@ -62,7 +63,7 @@ void Calvin::LoadTextures()
 
 void Calvin::Update(float deltaTime)
 {
-	pollKeyboard();
+	pollInput();
 
 	if (xVel > maxHorizontalVel) xVel = maxHorizontalVel;
 	else if (xVel < -maxHorizontalVel) xVel = -maxHorizontalVel;
@@ -144,9 +145,10 @@ void Calvin::Render()
 	glDisable(GL_BLEND);
 }
 
-void Calvin::pollKeyboard()
+void Calvin::pollInput()
 {
-	glfwGetMousePos(&targetX, &targetY);
+	targetX = MOUSE_X;
+	targetY = MOUSE_Y;
 
 	if (targetX < Window::WINDOW_WIDTH / 2)
 		facingRight = false;
@@ -173,24 +175,24 @@ void Calvin::pollKeyboard()
 		else if (xVel < 0.0) xVel += xVelModifier;
 	}
 
-	if (KEY_HIT(GLFW_KEY_LALT) && canJump)
+	if (MOUSE_HIT(GLFW_MOUSE_BUTTON_2) && canJump)
 	{
 		yVel = maxVerticalVel;
 		canJump = false;
 	}
 
-	if (KEY_HIT(GLFW_KEY_LSHIFT))
+	if (KEY_HIT('Q'))
 	{
 		snowballsEquipped = !snowballsEquipped;
 	}
 
-	if (snowballsEquipped && KEY_HIT(GLFW_KEY_SPACE))
+	if (snowballsEquipped && MOUSE_HIT(GLFW_MOUSE_BUTTON_1))
 	{
 		// Throw snowball
 
 	}
 	
-	if (!snowballsEquipped && KEY_DOWN(GLFW_KEY_SPACE))
+	if (!snowballsEquipped && MOUSE_DOWN(GLFW_MOUSE_BUTTON_1))
 	{
 		// Activate FlameThrower
 

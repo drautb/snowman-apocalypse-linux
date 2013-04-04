@@ -50,6 +50,6 @@ public:
 
 private:
 
-	void pollKeyboard();
+	void pollInput();
 };
 

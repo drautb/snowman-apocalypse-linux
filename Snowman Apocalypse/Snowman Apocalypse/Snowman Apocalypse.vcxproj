@@ -70,6 +70,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -79,6 +80,7 @@
     <ClInclude Include="cs455Utils.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Matrix455.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="Vector455.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />

@@ -5,6 +5,7 @@
 #include <GL/glfw.h>
 
 #include "Keyboard.h"
+#include "Mouse.h"
 #include "Camera.h"
 #include "cs455Utils.h"
 

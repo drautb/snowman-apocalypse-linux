@@ -42,6 +42,8 @@ bool Window::Open(void)
 
 	glfwSetWindowSizeCallback(ResizeCallback);
 	glfwSetKeyCallback(KeyboardCallback);
+	glfwSetMousePosCallback(MousePosCallback);
+	glfwSetMouseButtonCallback(MouseButtonCallback);
 	glfwSetWindowTitle("Snowman Apocalypse");
 
 	glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
