@@ -5,11 +5,11 @@
 
 class MovingObject : public Object
 {
-private:
+protected:
 
-	Vector455			position;
-	Vector455			velocity;
-	Vector455			acceleration;
+	Vector455			*position;
+	Vector455			*velocity;
+	Vector455			*acceleration;
 
 public:
 
@@ -19,6 +19,6 @@ public:
 	MovingObject(void);
 	~MovingObject(void);
 
-	void Update(float deltaTime);
+	void UpdateMovement(float deltaTime);
 };
 

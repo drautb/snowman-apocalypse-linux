@@ -71,6 +71,9 @@
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="MovingObject.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Snowball.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -81,6 +84,9 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Matrix455.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="MovingObject.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Snowball.h" />
     <ClInclude Include="Vector455.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />

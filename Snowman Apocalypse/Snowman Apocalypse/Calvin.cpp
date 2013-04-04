@@ -6,6 +6,7 @@
 #include "Mouse.h"
 #include "World.h"
 #include "Calvin.h"
+#include "Snowball.h"
 
 Calvin::Calvin(void)
 {
@@ -13,19 +14,16 @@ Calvin::Calvin(void)
 	halfWidth = width / 2.0f;
 	height = 0.8f;
 
-	xVel = 0.0f;
 	xVelModifier = 0.01f;
-
-	yVel = 0.0f;
-
-	zVel = 0.0f;
+	yVelModifier = 0.0f;
 	zVelModifier = 0.01f;
 
 	maxHorizontalVel = 1.0f;
 	maxVerticalVel = 8.0f;
 
-	calvinTransform = new Matrix455();
-	*calvinTransform = Matrix455::Identity();
+	acceleration->x() = 0.0f;
+	acceleration->y() = -World::GRAVITY;
+
 	x() = 5.0f - width / 2.0f;
 	y() = 0.0f;
 	z() = 0.5f;
@@ -46,7 +44,28 @@ Calvin::Calvin(void)
 
 Calvin::~Calvin(void)
 {
-	SAFE_DELETE(calvinTransform);
+
+}
+
+float Calvin::CenterX()
+{
+	float x = position->x();
+
+	return x;
+}
+
+float Calvin::CenterY()
+{
+	float y = position->y() + height / 2.0f;
+
+	return y;
+}
+
+float Calvin::CenterZ()
+{
+	float z = position->z();
+
+	return z;
 }
 
 void Calvin::LoadTextures()
@@ -68,31 +87,28 @@ void Calvin::Update(float deltaTime)
 {
 	pollInput();
 
-	if (xVel > maxHorizontalVel) xVel = maxHorizontalVel;
-	else if (xVel < -maxHorizontalVel) xVel = -maxHorizontalVel;
+	if (velocity->x() > maxHorizontalVel) velocity->x() = maxHorizontalVel;
+	else if (velocity->x() < -maxHorizontalVel) velocity->x() = -maxHorizontalVel;
 
-	yVel -= World::GRAVITY;
-	if (yVel > maxVerticalVel) yVel = maxVerticalVel;
-	else if (yVel < -maxVerticalVel) yVel = -maxVerticalVel;
+	if (velocity->y() > maxVerticalVel) velocity->y() = maxVerticalVel;
+	else if (velocity->y() < -maxVerticalVel) velocity->y() = -maxVerticalVel;
 
-	if (zVel > maxHorizontalVel) zVel = maxHorizontalVel;
-	else if (zVel < -maxHorizontalVel) zVel = -maxHorizontalVel;
+	if (velocity->z() > maxHorizontalVel) velocity->z() = maxHorizontalVel;
+	else if (velocity->z() < -maxHorizontalVel) velocity->z() = -maxHorizontalVel;
 
-	calvinTransform->x() += xVel * deltaTime;
-	calvinTransform->z() += zVel * deltaTime;
-	calvinTransform->y() += yVel * deltaTime;
+	UpdateMovement(deltaTime);
 
-	if (calvinTransform->x() < World::MIN_X) calvinTransform->x() = (float)World::MIN_X;
-	else if (calvinTransform->x() > World::MAX_X) calvinTransform->x() = (float)World::MAX_X;
+	if (position->x() < World::MIN_X) position->x() = (float)World::MIN_X;
+	else if (position->x() > World::MAX_X) position->x() = (float)World::MAX_X;
 
-	if (calvinTransform->y() < World::GROUND_Y)
+	if (position->y() < World::GROUND_Y)
 	{
-		calvinTransform->y() = World::GROUND_Y;
+		position->y() = World::GROUND_Y;
 		canJump = true;
 	}
 
-	if (calvinTransform->z() < World::MIN_Z) calvinTransform->z() = (float)World::MIN_Z;
-	else if (calvinTransform->z() > World::MAX_Z) calvinTransform->z() = (float)World::MAX_Z;
+	if (position->z() < World::MIN_Z) position->z() = (float)World::MIN_Z;
+	else if (position->z() > World::MAX_Z) position->z() = (float)World::MAX_Z;
 
 	// Rotation Stuff
 	if (facingRight)
@@ -116,12 +132,7 @@ void Calvin::Update(float deltaTime)
 }
 
 void Calvin::Render()
-{
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
-
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+{	
 	if (snowballsEquipped)
 		glBindTexture(GL_TEXTURE_2D, calvinSnowballTexture);
 	else
@@ -130,7 +141,8 @@ void Calvin::Render()
 	glColor3f(1.0f, 1.0f, 1.0f);
 
 	glMatrixMode(GL_MODELVIEW);
-	glTranslatef(calvinTransform->x(), calvinTransform->y(), calvinTransform->z());
+	glPushMatrix();
+	glTranslatef(position->x(), position->y(), position->z());
 	glRotatef(yRot, 0.0f, 1.0f, 0.0f);
 	
 	glBegin(GL_TRIANGLE_STRIP);
@@ -144,8 +156,7 @@ void Calvin::Render()
 		glVertex3f(halfWidth, height, 0.0f);
 	glEnd();
 
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_BLEND);
+	glPopMatrix();
 }
 
 void Calvin::pollInput()
@@ -159,28 +170,28 @@ void Calvin::pollInput()
 		facingRight = true;
 
 	if (KEY_DOWN('W'))
-		zVel -= zVelModifier;
+		velocity->z() -= zVelModifier;
 	else if (KEY_DOWN('S'))
-		zVel += zVelModifier;
+		velocity->z() += zVelModifier;
 	else
 	{
-		if (zVel > 0.0) zVel -= zVelModifier;
-		else if (zVel < 0.0) zVel += zVelModifier;
+		if (velocity->z() > 0.0) velocity->z() -= zVelModifier;
+		else if (velocity->z() < 0.0) velocity->z() += zVelModifier;
 	}
 
 	if (KEY_DOWN('A'))
-		xVel -= xVelModifier;
+		velocity->x() -= xVelModifier;
 	else if (KEY_DOWN('D'))
-		xVel += xVelModifier;
+		velocity->x() += xVelModifier;
 	else
 	{
-		if (xVel > 0.0) xVel -= xVelModifier;
-		else if (xVel < 0.0) xVel += xVelModifier;
+		if (velocity->x() > 0.0) velocity->x() -= xVelModifier;
+		else if (velocity->x() < 0.0) velocity->x() += xVelModifier;
 	}
 
 	if (MOUSE_HIT(GLFW_MOUSE_BUTTON_2) && canJump)
 	{
-		yVel = maxVerticalVel;
+		velocity->y() = maxVerticalVel;
 		canJump = false;
 	}
 
@@ -192,7 +203,10 @@ void Calvin::pollInput()
 	if (snowballsEquipped && MOUSE_HIT(GLFW_MOUSE_BUTTON_1))
 	{
 		// Throw snowball
-
+		Snowball::Throw(CenterX(), CenterY(), CenterZ() + 0.01f,
+						6.0f * (facingRight ? 1.0f : -1.0f),
+						5.0f); 
+		snowballs--;
 	}
 	
 	if (!snowballsEquipped && MOUSE_DOWN(GLFW_MOUSE_BUTTON_1))

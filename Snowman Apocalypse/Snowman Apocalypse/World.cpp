@@ -4,7 +4,7 @@
 
 #include "World.h"
 
-const float World::GRAVITY = 0.05f;
+const float World::GRAVITY = 25.0f;
 const float World::MIN_X = 0.0f;
 const float World::MIN_Z = 0.1f;
 const float World::MAX_X = 10.0f;
@@ -23,7 +23,6 @@ World::~World(void)
 void World::Render()
 {
 	glMatrixMode(GL_MODELVIEW);
-	glEnable(GL_TEXTURE_2D);
 	
 	// Render Street
 	glBindTexture(GL_TEXTURE_2D, streetTexture);
@@ -78,8 +77,6 @@ void World::Render()
 		glTexCoord2f(1.0f, 1.0f);
 		glVertex3f(10.0f, 3.0f, 0.0f);
 	glEnd();
-
-	glDisable(GL_TEXTURE_2D);
 }
 
 void World::LoadTextures(void)

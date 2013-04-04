@@ -5,7 +5,7 @@
 #include "cs455Utils.h"
 #include "MovingObject.h"
 
-class Calvin : MovingObject
+class Calvin : public MovingObject
 {
 private:
 
@@ -14,15 +14,9 @@ private:
 
 	float					width, height;
 	float					halfWidth;
-
-	float					xVel, xVelModifier;
-	float					yVel;
-	float					zVel, zVelModifier;
 	
+	float					xVelModifier, yVelModifier, zVelModifier;
 	float					maxHorizontalVel, maxVerticalVel;
-
-	Matrix455				*calvinTransform;
-
 	float					yRot, yRotVel;
 
 	float					facingRightYRot, facingLeftYRot;
@@ -45,13 +39,13 @@ public:
 	void Update(float deltaTime);
 	void Render();
 
-	float &x(){return calvinTransform->x();}
-	float &y(){return calvinTransform->y();}
-	float &z(){return calvinTransform->z();}
+	float &x(){return position->x();}
+	float &y(){return position->y();}
+	float &z(){return position->z();}
 
-	float CenterX()const{return calvinTransform->x() + width / 2.0f;}
-	float CenterY()const{return calvinTransform->y() + height / 2.0f;}
-	float CenterZ()const{return calvinTransform->z();}
+	float CenterX();
+	float CenterY();
+	float CenterZ();
 
 private:
 

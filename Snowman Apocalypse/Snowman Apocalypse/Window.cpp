@@ -7,6 +7,7 @@
 #include "Window.h"
 #include "Camera.h"
 #include "cs455Utils.h"
+#include "Snowball.h"
 
 using namespace std;
 using namespace Eigen;
@@ -31,6 +32,8 @@ Window::Window(void)
 
 Window::~Window(void)
 {
+	Snowball::ShutdownManager();
+
 	// Close window and terminate GLFW
 	glfwTerminate();
 }
@@ -49,10 +52,11 @@ bool Window::Open(void)
 	glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
 
 	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
 
 	gameWorld.LoadTextures();
 	calvin.LoadTextures();
+	Snowball::LoadTextures();
+	Snowball::InitManager();
 
 	return true;
 }
@@ -77,8 +81,10 @@ void Window::update()
 {
 	calvin.Update(timeElapsed);
 
+	Snowball::UpdateAll(timeElapsed);
+
 	//Camera::GetInstance()->PollKeyboard();
-	Camera::GetInstance()->TrackPoint(calvin.x(), 1.0f, 2.15f);
+	Camera::GetInstance()->TrackPoint(calvin.x(), 0.8f, 2.5f);
 	Camera::GetInstance()->Update(timeElapsed);
 }
 
@@ -86,6 +92,10 @@ void Window::redraw(void)
 {
 	//  Clear screen and Z-buffer
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	Camera::GetInstance()->Use();
 	renderEnvironment();	
@@ -95,6 +105,9 @@ void Window::redraw(void)
 
 	gluPerspective(90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 10.0);
 
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
+
 	glFlush();
 	glfwSwapBuffers();
 }
@@ -103,4 +116,5 @@ void Window::renderEnvironment(void)
 {
 	gameWorld.Render();
 	calvin.Render();
+	Snowball::RenderAll();
 }
