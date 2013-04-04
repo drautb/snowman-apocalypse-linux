@@ -39,6 +39,9 @@ Calvin::Calvin(void)
 	facingRight = true;
 	canJump = true;
 	snowballsEquipped = true;
+
+	snowballs = 100;
+	flameFuel = 100.0f;
 }
 
 Calvin::~Calvin(void)

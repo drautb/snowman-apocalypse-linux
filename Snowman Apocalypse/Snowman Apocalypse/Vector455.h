@@ -89,6 +89,26 @@ public:
 		return this->row(3)(0);
 	}
 
+	float &x()
+	{
+		return this->row(0)(0);
+	}
+
+	float &y()
+	{
+		return this->row(1)(0);
+	}
+
+	float &z()
+	{
+		return this->row(2)(0);
+	}
+
+	float &w()
+	{
+		return this->row(3)(0);
+	}
+
 	/**
 	 * TEST METHOD
 	 */

@@ -3,8 +3,9 @@
 #include <GL\glfw.h>
 
 #include "cs455Utils.h"
+#include "MovingObject.h"
 
-class Calvin
+class Calvin : MovingObject
 {
 private:
 
@@ -31,6 +32,10 @@ private:
 	bool					snowballsEquipped;
 
 	int						targetX, targetY;
+
+	// Ammo!
+	int						snowballs;
+	float					flameFuel;
 
 public:
 	Calvin(void);
