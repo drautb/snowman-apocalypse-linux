@@ -4,6 +4,7 @@
 
 #include "cs455Utils.h"
 #include "MovingObject.h"
+#include "FlameParticleEmitter.h"
 
 class Calvin : public MovingObject
 {
@@ -30,6 +31,10 @@ private:
 	// Ammo!
 	int						snowballs;
 	float					flameFuel;
+
+	bool					flamethrowing;
+
+	FlameParticleEmitter	flameEmitter;
 
 public:
 	Calvin(void);

@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "cs455Utils.h"
 #include "Snowball.h"
+#include "Particle.h"
 
 using namespace std;
 using namespace Eigen;
@@ -51,12 +52,14 @@ bool Window::Open(void)
 
 	glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
 
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
 
 	gameWorld.LoadTextures();
 	calvin.LoadTextures();
 	Snowball::LoadTextures();
 	Snowball::InitManager();
+	Particle::LoadTextures();
 
 	return true;
 }
@@ -84,7 +87,7 @@ void Window::update()
 	Snowball::UpdateAll(timeElapsed);
 
 	//Camera::GetInstance()->PollKeyboard();
-	Camera::GetInstance()->TrackPoint(calvin.x(), 0.8f, 2.5f);
+	Camera::GetInstance()->TrackPoint(calvin.x(), 0.9f, 2.5f);
 	Camera::GetInstance()->Update(timeElapsed);
 }
 

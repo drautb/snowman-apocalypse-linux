@@ -5,7 +5,7 @@
 
 class MovingObject : public Object
 {
-protected:
+public:
 
 	Vector455			*position;
 	Vector455			*velocity;
@@ -20,5 +20,8 @@ public:
 	~MovingObject(void);
 
 	void UpdateMovement(float deltaTime);
+
+	virtual void Update(float deltaTime)=0;
+	virtual void Render()=0;
 };
 

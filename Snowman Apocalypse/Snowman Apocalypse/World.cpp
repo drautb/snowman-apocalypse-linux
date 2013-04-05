@@ -23,7 +23,8 @@ World::~World(void)
 void World::Render()
 {
 	glMatrixMode(GL_MODELVIEW);
-	
+	glColor3f(1.0f, 1.0f, 1.0f);
+
 	// Render Street
 	glBindTexture(GL_TEXTURE_2D, streetTexture);
 	glBegin(GL_TRIANGLE_STRIP);
@@ -41,7 +42,6 @@ void World::Render()
 	// Render Curbside
 	glBindTexture(GL_TEXTURE_2D, sidewalkTexture);
 	glBegin(GL_TRIANGLE_STRIP);
-		//glColor3f(1.0f, 0.0f, 0.0f);
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex3f(0.0f, 0.0f, 1.0f);
 		glTexCoord2f(0.0f, 0.05f);

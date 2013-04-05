@@ -40,6 +40,8 @@ Calvin::Calvin(void)
 
 	snowballs = 100;
 	flameFuel = 100.0f;
+
+	flamethrowing = false;
 }
 
 Calvin::~Calvin(void)
@@ -110,6 +112,9 @@ void Calvin::Update(float deltaTime)
 	if (position->z() < World::MIN_Z) position->z() = (float)World::MIN_Z;
 	else if (position->z() > World::MAX_Z) position->z() = (float)World::MAX_Z;
 
+	flameEmitter.SetPosition(position->x(), position->y() + 0.25f, position->z() - 0.01f);
+	flameEmitter.SetVelocity(velocity->x(), velocity->y(), velocity->z());
+
 	// Rotation Stuff
 	if (facingRight)
 	{
@@ -129,6 +134,17 @@ void Calvin::Update(float deltaTime)
 				yRot = facingLeftYRot;
 		}
 	}
+
+	// If we're throwing flame, lose some fuel
+	if (flamethrowing && flameFuel > 0.0f)
+	{
+		flameFuel -= 1.0f * deltaTime;
+		flameEmitter.TurnOn();
+	}
+	else
+		flameEmitter.TurnOff();
+
+	flameEmitter.UpdateAll(deltaTime);
 }
 
 void Calvin::Render()
@@ -157,6 +173,8 @@ void Calvin::Render()
 	glEnd();
 
 	glPopMatrix();
+
+	flameEmitter.RenderAll();
 }
 
 void Calvin::pollInput()
@@ -168,6 +186,8 @@ void Calvin::pollInput()
 		facingRight = false;
 	else 
 		facingRight = true;
+
+	flameEmitter.SetBearing(facingRight);
 
 	if (KEY_DOWN('W'))
 		velocity->z() -= zVelModifier;
@@ -200,7 +220,7 @@ void Calvin::pollInput()
 		snowballsEquipped = !snowballsEquipped;
 	}
 
-	if (snowballsEquipped && MOUSE_HIT(GLFW_MOUSE_BUTTON_1))
+	if (snowballsEquipped && MOUSE_HIT(GLFW_MOUSE_BUTTON_1) && snowballs)
 	{
 		// Throw snowball
 		Snowball::Throw(CenterX(), CenterY(), CenterZ() + 0.01f,
@@ -211,7 +231,9 @@ void Calvin::pollInput()
 	
 	if (!snowballsEquipped && MOUSE_DOWN(GLFW_MOUSE_BUTTON_1))
 	{
-		// Activate FlameThrower
-
+		// Activate flamethrower
+		flamethrowing = true;
 	}
+	else
+		flamethrowing = false;
 }
