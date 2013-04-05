@@ -41,6 +41,7 @@ void Snowball::Render(void)
 	glTranslatef(position->x(), position->y(), position->z());
 
 	glBegin(GL_TRIANGLE_STRIP);
+		glColor3f(1.0f, 1.0f, 1.0f);
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex3f(-0.1f, -0.1f, 0.0f);
 		glTexCoord2f(1.0f, 0.0f);

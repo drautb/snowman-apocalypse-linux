@@ -136,7 +136,7 @@ void Calvin::Update(float deltaTime)
 	}
 
 	// If we're throwing flame, lose some fuel
-	if (flamethrowing && flameFuel > 0.0f)
+	if (flamethrowing && flameFuel > 0.0f && (yRot == facingLeftYRot || yRot == facingRightYRot))
 	{
 		flameFuel -= 1.0f * deltaTime;
 		flameEmitter.TurnOn();

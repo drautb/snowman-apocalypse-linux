@@ -11,8 +11,13 @@ Particle::Particle(void)
 	color = new Vector455();
 	*color = Vector455::Identity();
 
+	colorDecay = new Vector455();
+	*colorDecay = Vector455::Zero();
+
 	lifespan = 100.0f;
 	age = 0.0f;
+
+	halfSize = 0.05f;
 }
 
 Particle::~Particle(void)
@@ -31,6 +36,8 @@ void Particle::Update(float deltaTime)
 
 	if (age > lifespan)
 		alive = false;
+
+	*color -= (*colorDecay * deltaTime);
 }
 
 void Particle::Render()
@@ -43,15 +50,15 @@ void Particle::Render()
 	glTranslatef(position->x(), position->y(), position->z());
 
 	glBegin(GL_TRIANGLE_STRIP);
-		glColor4f(color->r(), color->g(), color->b(), 0.6f);
+		glColor4f(color->r(), color->g(), color->b(), color->a());
 		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(-0.05f, -0.05f, 0.0f);
+		glVertex3f(-halfSize, -halfSize, 0.0f);
 		glTexCoord2f(1.0f, 0.0f);
-		glVertex3f(0.05f, -0.05f, 0.0f);
+		glVertex3f(halfSize, -halfSize, 0.0f);
 		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(-0.05f, 0.05f, 0.0f);
+		glVertex3f(-halfSize, halfSize, 0.0f);
 		glTexCoord2f(1.0f, 1.0f);
-		glVertex3f(0.05f, 0.05f, 0.0f);
+		glVertex3f(halfSize, halfSize, 0.0f);
 	glEnd();
 
 	glPopMatrix();

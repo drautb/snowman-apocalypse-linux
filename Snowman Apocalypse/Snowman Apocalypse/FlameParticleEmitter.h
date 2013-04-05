@@ -8,7 +8,7 @@ class FlameParticleEmitter : public ObjectManager<Particle>, public MovingObject
 {
 private:
 
-	const static int				PARTICLE_COUNT = 500;
+	const static int				PARTICLE_COUNT = 600;
 
 	float							emissionFrequency, emissionTimer;
 

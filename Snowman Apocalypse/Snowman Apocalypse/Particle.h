@@ -10,8 +10,11 @@ public:
 	bool				alive;
 	
 	Vector455			*color;
+	Vector455			*colorDecay;
 
 	float				age, lifespan;
+	
+	float				halfSize;
 
 	static GLuint		particleTexture;
 
