@@ -2,6 +2,8 @@
 
 #include <GL/glfw.h>
 
+#include "SnowfallParticleEmitter.h"
+
 class World
 {
 public:
@@ -21,12 +23,15 @@ private:
 	GLuint				sidewalkEnd;
 	GLuint				streetEnd;
 
+	SnowfallParticleEmitter		snowfall;
+
 public:
 
 	World(void);
 	~World(void);
 
 	void LoadTextures(void);
+	void Update(float deltaTime);
 	void Render();
 
 private:

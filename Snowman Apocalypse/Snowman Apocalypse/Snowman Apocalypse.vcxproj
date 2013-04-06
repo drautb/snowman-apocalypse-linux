@@ -81,6 +81,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Snowball.cpp" />
+    <ClCompile Include="SnowfallParticleEmitter.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -97,6 +98,7 @@
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Snowball.h" />
+    <ClInclude Include="SnowfallParticleEmitter.h" />
     <ClInclude Include="Vector455.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />

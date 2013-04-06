@@ -81,6 +81,8 @@ void Window::EnterMainLoop(void)
 
 void Window::update()
 {
+	gameWorld.Update(timeElapsed);
+
 	calvin.Update(timeElapsed);
 
 	Snowball::UpdateAll(timeElapsed);

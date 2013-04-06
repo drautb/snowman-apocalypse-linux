@@ -12,12 +12,17 @@ const float World::MAX_Z = 0.9f;
 
 World::World(void)
 {
-
+	snowfall.TurnOn();
 }
 
 World::~World(void)
 {
 
+}
+
+void World::Update(float deltaTime)
+{
+	snowfall.UpdateAll(deltaTime);
 }
 
 void World::Render()
@@ -29,13 +34,13 @@ void World::Render()
 	glBindTexture(GL_TEXTURE_2D, streetTexture);
 	glBegin(GL_TRIANGLE_STRIP);
 		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(0.0f, -0.2f, 1.0f);
+		glVertex3f(-2.0f, -0.2f, 1.0f);
 		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(0.0f, -0.2f, 2.0f);
-		glTexCoord2f(10.0f, 1.0f);
-		glVertex3f(10.0f, -0.2f, 1.0f);
-		glTexCoord2f(10.0f, 0.0f);
-		glVertex3f(10.0f, -0.2f, 2.0f);
+		glVertex3f(-2.0f, -0.2f, 2.0f);
+		glTexCoord2f(14.0f, 1.0f);
+		glVertex3f(12.0f, -0.2f, 1.0f);
+		glTexCoord2f(14.0f, 0.0f);
+		glVertex3f(12.0f, -0.2f, 2.0f);
 		glColor3f(1.0f, 1.0f, 1.0f);
 	glEnd();
 
@@ -43,40 +48,43 @@ void World::Render()
 	glBindTexture(GL_TEXTURE_2D, sidewalkTexture);
 	glBegin(GL_TRIANGLE_STRIP);
 		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(-3.0f, 0.0f, 1.0f);
 		glTexCoord2f(0.0f, 0.05f);
-		glVertex3f(0.0f, -0.2f, 1.0f);
-		glTexCoord2f(10.0f, 0.0f);
-		glVertex3f(10.0f, 0.0f, 1.0f);
-		glTexCoord2f(10.0f, 0.05f);
-		glVertex3f(10.0f, -0.2f, 1.0f);
+		glVertex3f(-3.0f, -0.2f, 1.0f);
+		glTexCoord2f(16.0f, 0.0f);
+		glVertex3f(13.0f, 0.0f, 1.0f);
+		glTexCoord2f(16.0f, 0.05f);
+		glVertex3f(13.0f, -0.2f, 1.0f);
 	glEnd();
 
 	// Render Sidewalk
 	glBegin(GL_TRIANGLE_STRIP);
 		//glColor3f(0.0f, 1.0f, 0.0f);
 		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(-3.0f, 0.0f, 0.0f);
 		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(0.0f, 0.0f, 1.0f);
-		glTexCoord2f(10.0f, 1.0f);
-		glVertex3f(10.0f, 0.0f, 0.0f);
-		glTexCoord2f(10.0f, 0.0f);
-		glVertex3f(10.0f, 0.0f, 1.0f);
+		glVertex3f(-3.0f, 0.0f, 1.0f);
+		glTexCoord2f(16.0f, 1.0f);
+		glVertex3f(13.0f, 0.0f, 0.0f);
+		glTexCoord2f(16.0f, 0.0f);
+		glVertex3f(13.0f, 0.0f, 1.0f);
 	glEnd();
 
 	// Render Background
-	glBindTexture(GL_TEXTURE_2D, backgroundTexture);
+	glBindTexture(GL_TEXTURE_2D, -1);
+	glColor3f(0.0f, 0.0f, 0.0f);
 	glBegin(GL_TRIANGLE_STRIP);
 		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(-3.0f, 0.0f, 0.0f);
 		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(0.0f, 3.0f, 0.0f);
+		glVertex3f(-3.0f, 3.0f, 0.0f);
 		glTexCoord2f(1.0f, 0.0f);
-		glVertex3f(10.0f, 0.0f, 0.0f);
+		glVertex3f(13.0f, 0.0f, 0.0f);
 		glTexCoord2f(1.0f, 1.0f);
-		glVertex3f(10.0f, 3.0f, 0.0f);
+		glVertex3f(13.0f, 3.0f, 0.0f);
 	glEnd();
+
+	snowfall.RenderAll();
 }
 
 void World::LoadTextures(void)
