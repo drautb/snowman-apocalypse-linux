@@ -86,6 +86,7 @@ void Snowball::UpdateAll(float deltaTime)
 
 void Snowball::RenderAll(void)
 {
+	glEnable(GL_BLEND);
 	glBindTexture(GL_TEXTURE_2D, snowballTexture);
 
 	for (int s=0; s<SNOWBALL_COUNT; s++)

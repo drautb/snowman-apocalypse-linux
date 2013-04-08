@@ -71,8 +71,7 @@ void World::Render()
 	glEnd();
 
 	// Render Background
-	glBindTexture(GL_TEXTURE_2D, -1);
-	glColor3f(0.0f, 0.0f, 0.0f);
+	glBindTexture(GL_TEXTURE_2D, backgroundTexture);
 	glBegin(GL_TRIANGLE_STRIP);
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex3f(-3.0f, 0.0f, 0.0f);
@@ -91,7 +90,7 @@ void World::LoadTextures(void)
 {
 	glGenTextures(1, &backgroundTexture);
 	glBindTexture(GL_TEXTURE_2D, backgroundTexture);
-	glfwLoadTexture2D("background.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glfwLoadTexture2D("forest.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

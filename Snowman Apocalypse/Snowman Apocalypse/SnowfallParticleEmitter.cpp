@@ -32,6 +32,7 @@ void SnowfallParticleEmitter::UpdateAll(float deltaTime)
 
 void SnowfallParticleEmitter::RenderAll()
 {
+	glEnable(GL_BLEND);
 	glBindTexture(GL_TEXTURE_2D, Particle::particleTexture);
 
 	glDepthMask(GL_FALSE);

@@ -32,6 +32,7 @@ void FlameParticleEmitter::UpdateAll(float deltaTime)
 
 void FlameParticleEmitter::RenderAll()
 {
+	glEnable(GL_BLEND);
 	glBindTexture(GL_TEXTURE_2D, Particle::particleTexture);
 
 	glDepthMask(GL_FALSE);

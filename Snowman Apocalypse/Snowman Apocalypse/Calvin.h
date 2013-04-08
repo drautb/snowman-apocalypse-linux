@@ -5,6 +5,7 @@
 #include "cs455Utils.h"
 #include "MovingObject.h"
 #include "FlameParticleEmitter.h"
+#include "StatusBar.h"
 
 class Calvin : public MovingObject
 {
