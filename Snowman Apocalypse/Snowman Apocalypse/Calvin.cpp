@@ -38,8 +38,8 @@ Calvin::Calvin(void)
 	canJump = true;
 	snowballsEquipped = true;
 
-	snowballs = 100;
-	flameFuel = 100.0f;
+	snowballs = maxSnowballs = 50;
+	flameFuel = maxFlameFuel = 100.0f;
 
 	flamethrowing = false;
 }

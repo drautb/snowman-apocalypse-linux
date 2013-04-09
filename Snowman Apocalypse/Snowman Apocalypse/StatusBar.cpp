@@ -13,6 +13,9 @@ StatusBar::StatusBar(float min, float max, float width, float height)
 
 	backgroundColor = new Vector455();
 	*backgroundColor = Vector455::Zero();
+	backgroundColor->r() = 0.5f;
+	backgroundColor->g() = 0.5f;
+	backgroundColor->b() = 0.5f;
 
 	currentColor = new Vector455();
 	*currentColor = Vector455::Zero();

@@ -11,6 +11,7 @@
 
 #include "World.h"
 #include "Calvin.h"
+#include "StatusBar.h"
 
 using namespace Eigen;
 
@@ -41,6 +42,14 @@ private:
 	World									gameWorld;
 	Calvin									calvin;
 
+	StatusBar								*flameFuelMeter;
+	StatusBar								*snowballMeter;
+
+	int										score, waveNumber;
+
+	GLuint									waveTexture, scoreTexture;
+	GLuint									numbersTexture;
+
 public:
 	/**
 	 * Constructor
@@ -67,5 +76,10 @@ private:
 	 */
 	void redraw();
 	void renderEnvironment();
+	void renderHUD();
+
+	void loadTextures();
+	
+	void printNumber(int number, int x, int y, int digitWidth, int digitHeight);
 };
 

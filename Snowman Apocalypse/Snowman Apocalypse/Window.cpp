@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <string>
 #include <cmath>
 
 #include <GL/glfw.h>
@@ -29,11 +29,20 @@ Window::Window(void)
 	glfwInit();
 
 	lastTime = timeElapsed = 0.0;
+
+	flameFuelMeter = new StatusBar(0.0f, calvin.MaxFlameFuel(), 100.0f, 12.0f);
+	snowballMeter = new StatusBar(0.0f, (float)calvin.MaxSnowballs(), 100.0f, 12.0f);
+
+	score = 0;
+	waveNumber = 0;
 }
 
 Window::~Window(void)
 {
 	Snowball::ShutdownManager();
+
+	SAFE_DELETE(flameFuelMeter);
+	SAFE_DELETE(snowballMeter);
 
 	// Close window and terminate GLFW
 	glfwTerminate();
@@ -53,6 +62,8 @@ bool Window::Open(void)
 	glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
 
 	glEnable(GL_DEPTH_TEST);
+
+	loadTextures();
 
 	gameWorld.LoadTextures();
 	calvin.LoadTextures();
@@ -76,6 +87,10 @@ void Window::EnterMainLoop(void)
 
 		update();
 		redraw();
+		renderHUD();
+
+		glFlush();
+		glfwSwapBuffers();
 	}
 }
 
@@ -84,6 +99,8 @@ void Window::update()
 	gameWorld.Update(timeElapsed);
 
 	calvin.Update(timeElapsed);
+	flameFuelMeter->Update(calvin.FlameFuel());
+	snowballMeter->Update((float)calvin.Snowballs());
 
 	Snowball::UpdateAll(timeElapsed);
 
@@ -111,9 +128,6 @@ void Window::redraw(void)
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
-
-	glFlush();
-	glfwSwapBuffers();
 }
 
 void Window::renderEnvironment(void)
@@ -121,4 +135,159 @@ void Window::renderEnvironment(void)
 	gameWorld.Render();
 	calvin.Render();
 	Snowball::RenderAll();
+}
+
+void Window::renderHUD(void)
+{
+	// Set up orthographic rendering...
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0.0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, -1, 1);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+	// Draw Snowball and flamethrower meters
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBindTexture(GL_TEXTURE_2D, calvin.calvinFlamethrowerTexture);
+	glBegin(GL_TRIANGLE_STRIP);
+		glTexCoord2i(0, 1);
+		glVertex2i(10, 10);
+		glTexCoord2i(1, 1);
+		glVertex2i(40, 10);
+		glTexCoord2i(0, 0);
+		glVertex2i(10, 40);
+		glTexCoord2i(1, 0);
+		glVertex2i(40, 40);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, calvin.calvinSnowballTexture);
+	glBegin(GL_TRIANGLE_STRIP);
+		glTexCoord2i(0, 1);
+		glVertex2i(10, 50);
+		glTexCoord2i(1, 1);
+		glVertex2i(40, 50);
+		glTexCoord2i(0, 0);
+		glVertex2i(10, 80);
+		glTexCoord2i(1, 0);
+		glVertex2i(40, 80);
+	glEnd();
+
+	flameFuelMeter->Render(100, 25, 0);
+	snowballMeter->Render(100, 65, 0);
+	
+	// Draw entities on radar
+	glPointSize(5.0f);
+	glBegin(GL_POINTS);
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex2i(590 + (int)((calvin.x() / World::MAX_X) * 200), 10 + (int)((calvin.z() / World::MAX_Z) * 50));
+	glEnd();
+
+	// Draw radar box
+	glEnable(GL_BLEND);
+	glBegin(GL_TRIANGLE_STRIP);
+		glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+		glVertex2i(590, 10);
+		glVertex2i(790, 10);
+		glVertex2i(590, 60);
+		glVertex2i(790, 60);
+	glEnd();
+
+	// Draw score and wave number
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, waveTexture);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glBegin(GL_TRIANGLE_STRIP);
+		glTexCoord2i(0, 1);
+		glVertex2i(10, 520);
+		glTexCoord2i(1, 1);
+		glVertex2i(130, 520);
+		glTexCoord2i(0, 0);
+		glVertex2i(10, 550);
+		glTexCoord2i(1, 0);
+		glVertex2i(130, 550);
+	glEnd();
+
+	printNumber(waveNumber, 140, 520, 20, 30);
+
+	glBindTexture(GL_TEXTURE_2D, scoreTexture);
+	glBegin(GL_TRIANGLE_STRIP);
+		glTexCoord2i(0, 1);
+		glVertex2i(10, 560);
+		glTexCoord2i(1, 1);
+		glVertex2i(130, 560);
+		glTexCoord2i(0, 0);
+		glVertex2i(10, 590);
+		glTexCoord2i(1, 0);
+		glVertex2i(130, 590);
+	glEnd();
+
+	printNumber(score, 140, 560, 20, 30);
+
+	glDisable(GL_TEXTURE_2D);
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+}
+
+void Window::loadTextures()
+{
+	glGenTextures(1, &waveTexture);
+	glBindTexture(GL_TEXTURE_2D, waveTexture);
+	glfwLoadTexture2D("wave.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glGenTextures(1, &scoreTexture);
+	glBindTexture(GL_TEXTURE_2D, scoreTexture);
+	glfwLoadTexture2D("score.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glGenTextures(1, &numbersTexture);
+	glBindTexture(GL_TEXTURE_2D, numbersTexture);
+	glfwLoadTexture2D("numbers.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
+void Window::printNumber(int number, int x, int y, int digitWidth, int digitHeight)
+{
+	std::string s = std::to_string(number);
+	int asciiCode, offset;
+
+	float textureDigitWidth = 0.1f;	// Each digit in the texture is 1/10 of the whole width.
+
+	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, numbersTexture);
+
+	for (unsigned int i=0; i<s.length(); i++)
+	{
+		asciiCode = (int)s[i];
+		offset = asciiCode - 48; // 48 is the ascii code for '0'
+
+		glBegin(GL_TRIANGLE_STRIP);
+		
+			// Top Left
+			glTexCoord2f(offset * textureDigitWidth, 1.0f);
+			glVertex2i(x + (i * digitWidth), y);
+
+			// Top Right
+			glTexCoord2f(offset * textureDigitWidth + textureDigitWidth, 1.0f);
+			glVertex2i(x + ((i + 1) * digitWidth), y);
+
+			// Bottom Left
+			glTexCoord2f(offset * textureDigitWidth, 0.0f);
+			glVertex2i(x + (i * digitWidth), y + digitHeight);
+
+			// Bottom Right
+			glTexCoord2f(offset * textureDigitWidth + textureDigitWidth, 0.0f);
+			glVertex2i(x + ((i + 1) * digitWidth), y + digitHeight);			
+
+		glEnd();
+	}
 }

@@ -9,10 +9,12 @@
 
 class Calvin : public MovingObject
 {
-private:
+public:
 
 	GLuint					calvinSnowballTexture;
 	GLuint					calvinFlamethrowerTexture;
+
+private:
 
 	float					width, height;
 	float					halfWidth;
@@ -30,8 +32,8 @@ private:
 	int						targetX, targetY;
 
 	// Ammo!
-	int						snowballs;
-	float					flameFuel;
+	int						snowballs, maxSnowballs;
+	float					flameFuel, maxFlameFuel;
 
 	bool					flamethrowing;
 
@@ -52,6 +54,12 @@ public:
 	float CenterX();
 	float CenterY();
 	float CenterZ();
+
+	int	  Snowballs()const{return snowballs;}
+	int	  MaxSnowballs()const{return maxSnowballs;}
+
+	float FlameFuel()const{return flameFuel;}
+	float MaxFlameFuel()const{return maxFlameFuel;}
 
 private:
 
