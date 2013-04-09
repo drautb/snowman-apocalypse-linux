@@ -12,6 +12,7 @@
 #include "World.h"
 #include "Calvin.h"
 #include "StatusBar.h"
+#include "Snowman.h"
 
 using namespace Eigen;
 
@@ -49,6 +50,9 @@ private:
 
 	GLuint									waveTexture, scoreTexture;
 	GLuint									numbersTexture;
+
+	// TEST
+	Snowman									testSnowman;
 
 public:
 	/**

@@ -35,6 +35,8 @@ Window::Window(void)
 
 	score = 0;
 	waveNumber = 0;
+
+	testSnowman.Respawn();
 }
 
 Window::~Window(void)
@@ -70,6 +72,7 @@ bool Window::Open(void)
 	Snowball::LoadTextures();
 	Snowball::InitManager();
 	Particle::LoadTextures();
+	Snowman::LoadTextures();
 
 	return true;
 }
@@ -104,6 +107,8 @@ void Window::update()
 
 	Snowball::UpdateAll(timeElapsed);
 
+	testSnowman.Update(timeElapsed);
+
 	//Camera::GetInstance()->PollKeyboard();
 	Camera::GetInstance()->TrackPoint(calvin.x(), 0.9f, 2.5f);
 	Camera::GetInstance()->Update(timeElapsed);
@@ -135,6 +140,7 @@ void Window::renderEnvironment(void)
 	gameWorld.Render();
 	calvin.Render();
 	Snowball::RenderAll();
+	testSnowman.Render();
 }
 
 void Window::renderHUD(void)
