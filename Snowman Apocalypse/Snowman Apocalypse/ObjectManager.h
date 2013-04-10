@@ -9,9 +9,11 @@ using namespace std;
 template <typename T>
 class ObjectManager
 {
-protected:
+public:
 
 	vector<T*>				objects;
+
+protected:
 
 	int						objectCount;
 

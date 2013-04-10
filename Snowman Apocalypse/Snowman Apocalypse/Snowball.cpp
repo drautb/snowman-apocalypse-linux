@@ -26,9 +26,6 @@ void Snowball::Update(float deltaTime)
 		return;
 
 	UpdateMovement(deltaTime);
-
-	if (position->y() < World::GROUND_Y)
-		alive = false;
 }
 
 void Snowball::Render(void)
@@ -87,6 +84,7 @@ void Snowball::UpdateAll(float deltaTime)
 void Snowball::RenderAll(void)
 {
 	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, snowballTexture);
 
 	for (int s=0; s<SNOWBALL_COUNT; s++)

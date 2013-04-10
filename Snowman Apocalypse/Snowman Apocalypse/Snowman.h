@@ -25,6 +25,10 @@ private:
 
 	float						xVelModifier; // Speed will slow down with health
 
+	static float				SNOWBALL_DAMAGE_FACTOR;
+
+public:
+
 	static float				halfWidth, halfHeight;
 
 public:
@@ -39,11 +43,20 @@ public:
 
 	void Update(float deltaTime);
 	void Render();
+	void RenderHealthBar();
+
+	void HitWithSnowball();
+
+	bool IsAlive()const{return alive;}
+	float x()const{return position->x();}
+	float y()const{return position->y();}
+	float z()const{return position->z();}
 
 	static void LoadTextures();
 
 private:
 
 	void switchScaleDirection();
+	void clampHealth();
 };
 

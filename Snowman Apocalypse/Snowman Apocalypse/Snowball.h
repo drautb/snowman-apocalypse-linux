@@ -20,7 +20,7 @@ public:
 	// One texture for all snowballs
 	static GLuint				snowballTexture;
 
-private:
+public:
 
 	bool						alive;
 
@@ -32,6 +32,7 @@ public:
 
 	void Update(float deltaTime);
 	void Render(void);
+	bool IsAlive()const{return alive;}
 
 	static void LoadTextures(void);
 	static void InitManager(void);

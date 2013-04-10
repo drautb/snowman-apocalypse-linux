@@ -60,6 +60,12 @@
     <ClCompile Include="Snowman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SnowmanManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SnowSplashEmitter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -114,6 +120,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Snowman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SnowmanManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SnowSplashEmitter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

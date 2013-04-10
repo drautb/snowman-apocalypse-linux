@@ -32,7 +32,7 @@ private:
 	int						targetX, targetY;
 
 	// Ammo!
-	int						snowballs, maxSnowballs;
+	float						snowballs, maxSnowballs;
 	float					flameFuel, maxFlameFuel;
 
 	bool					flamethrowing;
@@ -55,8 +55,9 @@ public:
 	float CenterY();
 	float CenterZ();
 
-	int	  Snowballs()const{return snowballs;}
-	int	  MaxSnowballs()const{return maxSnowballs;}
+	float Snowballs()const{return snowballs;}
+	float MaxSnowballs()const{return maxSnowballs;}
+	void  HitSnowmanWithSnowball();
 
 	float FlameFuel()const{return flameFuel;}
 	float MaxFlameFuel()const{return maxFlameFuel;}

@@ -31,6 +31,8 @@ StatusBar::~StatusBar(void)
 void StatusBar::Update(float currentVal)
 {
 	this->currentVal = currentVal;
+	if (this->currentVal < minVal)
+		this->currentVal = minVal;
 
 	calculateColor();
 }

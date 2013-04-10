@@ -13,6 +13,8 @@
 #include "Calvin.h"
 #include "StatusBar.h"
 #include "Snowman.h"
+#include "SnowmanManager.h"
+#include "SnowSplashEmitter.h"
 
 using namespace Eigen;
 
@@ -43,6 +45,10 @@ private:
 	World									gameWorld;
 	Calvin									calvin;
 
+	SnowmanManager							snowmanManager;
+
+	SnowSplashEmitter						splashEmitter;
+
 	StatusBar								*flameFuelMeter;
 	StatusBar								*snowballMeter;
 
@@ -50,9 +56,6 @@ private:
 
 	GLuint									waveTexture, scoreTexture;
 	GLuint									numbersTexture;
-
-	// TEST
-	Snowman									testSnowman;
 
 public:
 	/**
@@ -74,6 +77,7 @@ public:
 private: 
 
 	void update();
+	void updateCollisions();
 
 	/**
 	 * Rendering Methods
@@ -85,5 +89,8 @@ private:
 	void loadTextures();
 	
 	void printNumber(int number, int x, int y, int digitWidth, int digitHeight);
+	
+	bool collides(float cX1, float cY1, float cZ1, float hW1, float hH1,
+				  float cX2, float cY2, float cZ2, float hW2, float hH2, float zDepth);
 };
 

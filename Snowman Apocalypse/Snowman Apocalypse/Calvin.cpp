@@ -38,7 +38,7 @@ Calvin::Calvin(void)
 	canJump = true;
 	snowballsEquipped = true;
 
-	snowballs = maxSnowballs = 50;
+	snowballs = maxSnowballs = 50.0f;
 	flameFuel = maxFlameFuel = 100.0f;
 
 	flamethrowing = false;
@@ -142,13 +142,19 @@ void Calvin::Update(float deltaTime)
 		flameEmitter.TurnOn();
 	}
 	else
+	{
 		flameEmitter.TurnOff();
+		flameFuel += deltaTime;
+	}
 
 	flameEmitter.UpdateAll(deltaTime);
 }
 
 void Calvin::Render()
 {	
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+
 	if (snowballsEquipped)
 		glBindTexture(GL_TEXTURE_2D, calvinSnowballTexture);
 	else
@@ -236,4 +242,9 @@ void Calvin::pollInput()
 	}
 	else
 		flamethrowing = false;
+}
+
+void Calvin::HitSnowmanWithSnowball()
+{
+	snowballs += 1.4f;
 }

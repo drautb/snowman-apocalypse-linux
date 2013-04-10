@@ -83,6 +83,8 @@
     <ClCompile Include="Snowball.cpp" />
     <ClCompile Include="SnowfallParticleEmitter.cpp" />
     <ClCompile Include="Snowman.cpp" />
+    <ClCompile Include="SnowmanManager.cpp" />
+    <ClCompile Include="SnowSplashEmitter.cpp" />
     <ClCompile Include="StatusBar.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
@@ -102,6 +104,8 @@
     <ClInclude Include="Snowball.h" />
     <ClInclude Include="SnowfallParticleEmitter.h" />
     <ClInclude Include="Snowman.h" />
+    <ClInclude Include="SnowmanManager.h" />
+    <ClInclude Include="SnowSplashEmitter.h" />
     <ClInclude Include="StatusBar.h" />
     <ClInclude Include="Vector455.h" />
     <ClInclude Include="Window.h" />

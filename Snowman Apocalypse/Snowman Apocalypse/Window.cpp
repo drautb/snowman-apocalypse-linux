@@ -35,8 +35,6 @@ Window::Window(void)
 
 	score = 0;
 	waveNumber = 0;
-
-	testSnowman.Respawn();
 }
 
 Window::~Window(void)
@@ -74,6 +72,8 @@ bool Window::Open(void)
 	Particle::LoadTextures();
 	Snowman::LoadTextures();
 
+	snowmanManager.NextWave(2);
+
 	return true;
 }
 
@@ -99,6 +99,8 @@ void Window::EnterMainLoop(void)
 
 void Window::update()
 {
+	updateCollisions();
+
 	gameWorld.Update(timeElapsed);
 
 	calvin.Update(timeElapsed);
@@ -106,12 +108,51 @@ void Window::update()
 	snowballMeter->Update((float)calvin.Snowballs());
 
 	Snowball::UpdateAll(timeElapsed);
+	
+	snowmanManager.UpdateAll(timeElapsed);
 
-	testSnowman.Update(timeElapsed);
+	splashEmitter.UpdateAll(timeElapsed);
 
 	//Camera::GetInstance()->PollKeyboard();
 	Camera::GetInstance()->TrackPoint(calvin.x(), 0.9f, 2.5f);
 	Camera::GetInstance()->Update(timeElapsed);
+}
+
+void Window::updateCollisions()
+{
+	for (int i=0; i<Snowball::SNOWBALL_COUNT; i++)
+	{
+		Snowball *s = Snowball::SnowballManager[i];
+
+		if (!s->IsAlive())
+			continue;
+
+		// Check against snowmen
+		for (int m=0; m<SnowmanManager::SNOWMAN_COUNT; m++)
+		{
+			Snowman *snowman = snowmanManager.objects[m];
+
+			if (!snowman->IsAlive())
+				continue;
+
+			if (collides(s->position->x(), s->position->y(), s->position->z(), 0.1f, 0.1f,
+				snowman->position->x(), snowman->position->y(), snowman->position->z(), snowman->halfWidth, snowman->halfHeight,
+				0.1f))
+			{
+				s->alive = false;
+				splashEmitter.Emit(s->position->x(), s->position->y(), s->position->z(), 10);
+				snowman->HitWithSnowball();
+				calvin.HitSnowmanWithSnowball();
+			}
+		}
+
+		// Check for ground boundary
+		if (s->IsAlive() && s->position->y() < World::GROUND_Y)
+		{
+			s->alive = false;
+			splashEmitter.Emit(s->position->x(), s->position->y(), s->position->z(), 10);
+		}
+	}
 }
 
 void Window::redraw(void)
@@ -138,9 +179,10 @@ void Window::redraw(void)
 void Window::renderEnvironment(void)
 {
 	gameWorld.Render();
+	snowmanManager.RenderAll();
 	calvin.Render();
 	Snowball::RenderAll();
-	testSnowman.Render();
+	splashEmitter.RenderAll();
 }
 
 void Window::renderHUD(void)
@@ -188,8 +230,10 @@ void Window::renderHUD(void)
 	// Draw entities on radar
 	glPointSize(5.0f);
 	glBegin(GL_POINTS);
-		glColor3f(0.0f, 0.0f, 1.0f);
+		glColor3f(0.0f, 1.0f, 0.0f);
 		glVertex2i(590 + (int)((calvin.x() / World::MAX_X) * 200), 10 + (int)((calvin.z() / World::MAX_Z) * 50));
+		glColor3f(1.0f, 0.0f, 0.0f);
+		snowmanManager.RenderBlips(590, 10, 200, 50);
 	glEnd();
 
 	// Draw radar box
@@ -296,4 +340,19 @@ void Window::printNumber(int number, int x, int y, int digitWidth, int digitHeig
 
 		glEnd();
 	}
+}
+
+bool Window::collides(float cX1, float cY1, float cZ1, float hW1, float hH1,
+					  float cX2, float cY2, float cZ2, float hW2, float hH2, float zDepth)
+{
+	// Make sure that they're close enough in Z...
+	if (abs(cZ2 - cZ1) > zDepth)
+		return false;
+
+	if (cX1 + hW1 < cX2 - hW2) return false; // a is left of b
+    if (cX1 - hW1 > cX2 + hW2) return false; // a is right of b
+    if (cY1 + hH1 < cY2 - hH2) return false; // a is above b
+    if (cY1 - hH1 > cY2 + hH2) return false; // a is below b
+
+    return true; // boxes overlap
 }
