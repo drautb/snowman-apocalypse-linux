@@ -76,6 +76,8 @@
     <ClCompile Include="FlameParticleEmitter.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Message.cpp" />
+    <ClCompile Include="MessageManager.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -86,6 +88,7 @@
     <ClCompile Include="SnowmanManager.cpp" />
     <ClCompile Include="SnowSplashEmitter.cpp" />
     <ClCompile Include="StatusBar.cpp" />
+    <ClCompile Include="SteamEmitter.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -96,6 +99,8 @@
     <ClInclude Include="FlameParticleEmitter.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Matrix455.h" />
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="MessageManager.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MovingObject.h" />
     <ClInclude Include="Object.h" />
@@ -107,6 +112,7 @@
     <ClInclude Include="SnowmanManager.h" />
     <ClInclude Include="SnowSplashEmitter.h" />
     <ClInclude Include="StatusBar.h" />
+    <ClInclude Include="SteamEmitter.h" />
     <ClInclude Include="Vector455.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />

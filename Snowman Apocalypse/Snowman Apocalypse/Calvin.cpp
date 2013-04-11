@@ -7,6 +7,8 @@
 #include "World.h"
 #include "Calvin.h"
 #include "Snowball.h"
+#include "MessageManager.h"
+#include "Window.h"
 
 Calvin::Calvin(void)
 {
@@ -82,6 +84,12 @@ void Calvin::LoadTextures()
 	glGenTextures(1, &calvinFlamethrowerTexture);
 	glBindTexture(GL_TEXTURE_2D, calvinFlamethrowerTexture);
 	glfwLoadTexture2D("calvin-flamethrower.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glGenTextures(1, &overheatedMsgTexture);
+	glBindTexture(GL_TEXTURE_2D, overheatedMsgTexture);
+	glfwLoadTexture2D("overheated.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
@@ -252,6 +260,9 @@ void Calvin::pollInput()
 	}
 	else
 		flamethrowing = false;
+
+	if (MOUSE_HIT(GLFW_MOUSE_BUTTON_1) && flameFuel < 0.0f)
+		MessageManager::GetInstance()->AddMessage(250, 300, 300, 50, overheatedMsgTexture, 3.0f);
 }
 
 void Calvin::HitSnowmanWithSnowball()

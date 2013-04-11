@@ -13,6 +13,7 @@ public:
 
 	GLuint					calvinSnowballTexture;
 	GLuint					calvinFlamethrowerTexture;
+	GLuint					overheatedMsgTexture;
 
 private:
 

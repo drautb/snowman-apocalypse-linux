@@ -34,7 +34,7 @@ Window::Window(void)
 	snowballMeter = new StatusBar(0.0f, (float)calvin.MaxSnowballs(), 100.0f, 12.0f);
 
 	score = 0;
-	waveNumber = 50;
+	waveNumber = 0;
 }
 
 Window::~Window(void)
@@ -80,6 +80,8 @@ void Window::EnterMainLoop(void)
 	bool running = true;
 	double currentTime = 0.0;
 
+	MessageManager::GetInstance()->AddMessage(100, 440, 600, 60, defendMsgTexture, 10.0f);
+
 	while (running)
 	{
 		currentTime = glfwGetTime();
@@ -98,7 +100,10 @@ void Window::EnterMainLoop(void)
 void Window::update()
 {
 	if (snowmanManager.AllDead())
+	{
 		snowmanManager.NextWave(waveNumber++);
+		MessageManager::GetInstance()->AddMessage(200, 100, 400, 60, nextWaveMsgTexture, 5.0f);
+	}
 
 	updateCollisions();
 
@@ -113,6 +118,9 @@ void Window::update()
 	snowmanManager.UpdateAll(timeElapsed);
 
 	splashEmitter.UpdateAll(timeElapsed);
+	steamEmitter.UpdateAll(timeElapsed);
+
+	MessageManager::GetInstance()->UpdateAll(timeElapsed);
 
 	//Camera::GetInstance()->PollKeyboard();
 	Camera::GetInstance()->TrackPoint(calvin.x(), 0.9f, 2.5f);
@@ -178,6 +186,8 @@ void Window::updateCollisions()
 			{
 				if (snowman->HitWithFlame(timeElapsed))
 					score++;
+
+				steamEmitter.Emit(snowman->x(), snowman->y(), snowman->z(), 1);
 			}
 		}
 	}
@@ -211,6 +221,7 @@ void Window::renderEnvironment(void)
 	calvin.Render();
 	Snowball::RenderAll();
 	splashEmitter.RenderAll();
+	steamEmitter.RenderAll();
 }
 
 void Window::renderHUD(void)
@@ -305,6 +316,8 @@ void Window::renderHUD(void)
 
 	printNumber(score, 140, 560, 20, 30);
 
+	MessageManager::GetInstance()->RenderAll();
+
 	glDisable(GL_TEXTURE_2D);
 
 	glMatrixMode(GL_PROJECTION);
@@ -328,6 +341,18 @@ void Window::loadTextures()
 	glGenTextures(1, &numbersTexture);
 	glBindTexture(GL_TEXTURE_2D, numbersTexture);
 	glfwLoadTexture2D("numbers.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glGenTextures(1, &defendMsgTexture);
+	glBindTexture(GL_TEXTURE_2D, defendMsgTexture);
+	glfwLoadTexture2D("defend.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glGenTextures(1, &nextWaveMsgTexture);
+	glBindTexture(GL_TEXTURE_2D, nextWaveMsgTexture);
+	glfwLoadTexture2D("nextwave.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

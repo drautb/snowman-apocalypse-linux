@@ -15,6 +15,8 @@
 #include "Snowman.h"
 #include "SnowmanManager.h"
 #include "SnowSplashEmitter.h"
+#include "SteamEmitter.h"
+#include "MessageManager.h"
 
 using namespace Eigen;
 
@@ -48,6 +50,7 @@ private:
 	SnowmanManager							snowmanManager;
 
 	SnowSplashEmitter						splashEmitter;
+	SteamEmitter							steamEmitter;
 
 	StatusBar								*flameFuelMeter;
 	StatusBar								*snowballMeter;
@@ -56,6 +59,7 @@ private:
 
 	GLuint									waveTexture, scoreTexture;
 	GLuint									numbersTexture;
+	GLuint									defendMsgTexture, nextWaveMsgTexture;
 
 public:
 	/**
