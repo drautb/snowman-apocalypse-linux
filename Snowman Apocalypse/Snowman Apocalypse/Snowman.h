@@ -13,19 +13,21 @@ public:
 
 private:
 
-	bool						alive;
+	bool						alive, melting;
 
 	float						health, MAX_HEALTH;
 	StatusBar					*healthBar;
 	
 	bool						facingRight;
 	
-	float						scaleX;
+	float						scaleX, scaleY;
 	float						minScale, maxScale, scaleModifier;
+	float						meltModifier;
 
 	float						xVelModifier; // Speed will slow down with health
 
 	static float				SNOWBALL_DAMAGE_FACTOR;
+	static float				FLAME_DAMAGE_FACTOR;
 
 public:
 
@@ -45,9 +47,10 @@ public:
 	void Render();
 	void RenderHealthBar();
 
-	void HitWithSnowball();
+	bool HitWithSnowball();
+	bool HitWithFlame(float deltaTime);
 
-	bool IsAlive()const{return alive;}
+	bool IsAlive()const{return alive && !melting;}
 	float x()const{return position->x();}
 	float y()const{return position->y();}
 	float z()const{return position->z();}

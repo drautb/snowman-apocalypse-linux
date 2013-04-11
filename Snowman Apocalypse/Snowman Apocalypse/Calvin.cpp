@@ -40,6 +40,7 @@ Calvin::Calvin(void)
 
 	snowballs = maxSnowballs = 50.0f;
 	flameFuel = maxFlameFuel = 100.0f;
+	flameChargeFactor = 10.0f;
 
 	flamethrowing = false;
 }
@@ -138,16 +139,25 @@ void Calvin::Update(float deltaTime)
 	// If we're throwing flame, lose some fuel
 	if (flamethrowing && flameFuel > 0.0f && (yRot == facingLeftYRot || yRot == facingRightYRot))
 	{
-		flameFuel -= 10.0f * deltaTime;
+		flameFuel -= 2 * flameChargeFactor * deltaTime;
 		flameEmitter.TurnOn();
+	}
+	else if (flamethrowing && flameFuel < 0.0f)
+	{
+		// Holding button, but no fuel
+		flameFuel -= flameChargeFactor * deltaTime;
+		flameEmitter.TurnOff();
 	}
 	else
 	{
 		flameEmitter.TurnOff();
-		flameFuel += deltaTime;
+		flameFuel += flameChargeFactor * deltaTime;
 	}
 
 	flameEmitter.UpdateAll(deltaTime);
+
+	clampSnowballs();
+	clampFlameFuel();
 }
 
 void Calvin::Render()
@@ -246,5 +256,19 @@ void Calvin::pollInput()
 
 void Calvin::HitSnowmanWithSnowball()
 {
-	snowballs += 1.4f;
+	snowballs += 1.2f;
+}
+
+void Calvin::clampSnowballs()
+{
+	if (snowballs < 0.0f)
+		snowballs = 0.0f;
+	else if (snowballs > maxSnowballs)
+		snowballs = maxSnowballs;
+}
+
+void Calvin::clampFlameFuel()
+{
+	if (flameFuel > maxFlameFuel)
+		flameFuel = maxFlameFuel;
 }

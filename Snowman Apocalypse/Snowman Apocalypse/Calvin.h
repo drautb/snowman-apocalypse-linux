@@ -32,8 +32,8 @@ private:
 	int						targetX, targetY;
 
 	// Ammo!
-	float						snowballs, maxSnowballs;
-	float					flameFuel, maxFlameFuel;
+	float					snowballs, maxSnowballs;
+	float					flameFuel, maxFlameFuel, flameChargeFactor;
 
 	bool					flamethrowing;
 
@@ -62,8 +62,13 @@ public:
 	float FlameFuel()const{return flameFuel;}
 	float MaxFlameFuel()const{return maxFlameFuel;}
 
+	bool IsFlamethrowing()const{return flamethrowing && flameFuel > 0.0f;}
+	bool IsFacingRight()const{return facingRight;}
+
 private:
 
 	void pollInput();
+	void clampSnowballs();
+	void clampFlameFuel();
 };
 

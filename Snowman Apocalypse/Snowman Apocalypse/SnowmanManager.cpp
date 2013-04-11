@@ -6,9 +6,11 @@ SnowmanManager::SnowmanManager(void)
 	this->Initialize(SNOWMAN_COUNT);
 
 	spawnTimer = 0.0f;
-	spawnFrequency = 10.0f;
+	spawnFrequency = 2.0f;
 
 	leftToSpawn = 0;
+
+	allDead = false;
 }
 
 
@@ -24,6 +26,11 @@ void SnowmanManager::UpdateAll(float deltaTime)
 	{
 		if (leftToSpawn-- > 0)
 			objects[NextObject()]->Respawn();
+
+		spawnTimer = 0.0f;
+
+		// Don't let it go negative
+		leftToSpawn = (leftToSpawn < 0 ? 0 : leftToSpawn);
 	}
 
 	for (int i=0; i<objectCount; i++)
@@ -49,10 +56,12 @@ void SnowmanManager::RenderAll()
 
 void SnowmanManager::RenderBlips(int x, int y, int width, int height)
 {
+	allDead = true;
 	for (int i=0; i<SNOWMAN_COUNT; i++)
 	{
 		if (objects[i]->IsAlive())
 		{
+			allDead = false;
 			glVertex2i(x + (int)((objects[i]->x() / World::MAX_X) * width), y + (int)((objects[i]->z() / World::MAX_Z) * height));
 		}
 	}
@@ -60,5 +69,5 @@ void SnowmanManager::RenderBlips(int x, int y, int width, int height)
 
 void SnowmanManager::NextWave(int waveNumber)
 {
-	leftToSpawn = waveNumber;
+	leftToSpawn = waveNumber + 2;
 }

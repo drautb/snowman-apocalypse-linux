@@ -34,7 +34,7 @@ Window::Window(void)
 	snowballMeter = new StatusBar(0.0f, (float)calvin.MaxSnowballs(), 100.0f, 12.0f);
 
 	score = 0;
-	waveNumber = 0;
+	waveNumber = 50;
 }
 
 Window::~Window(void)
@@ -72,8 +72,6 @@ bool Window::Open(void)
 	Particle::LoadTextures();
 	Snowman::LoadTextures();
 
-	snowmanManager.NextWave(2);
-
 	return true;
 }
 
@@ -99,6 +97,9 @@ void Window::EnterMainLoop(void)
 
 void Window::update()
 {
+	if (snowmanManager.AllDead())
+		snowmanManager.NextWave(waveNumber++);
+
 	updateCollisions();
 
 	gameWorld.Update(timeElapsed);
@@ -141,7 +142,8 @@ void Window::updateCollisions()
 			{
 				s->alive = false;
 				splashEmitter.Emit(s->position->x(), s->position->y(), s->position->z(), 10);
-				snowman->HitWithSnowball();
+				if (snowman->HitWithSnowball())
+					score++;
 				calvin.HitSnowmanWithSnowball();
 			}
 		}
@@ -151,6 +153,32 @@ void Window::updateCollisions()
 		{
 			s->alive = false;
 			splashEmitter.Emit(s->position->x(), s->position->y(), s->position->z(), 10);
+		}
+	}
+
+	if (calvin.IsFlamethrowing())
+	{
+		float flameBoxX = calvin.CenterX() + (calvin.IsFacingRight() ? 0.8f : -0.8f);
+		float flameBoxY = calvin.CenterY();
+		float flameBoxZ = calvin.CenterZ();
+		float flameBoxHW = 0.8f;
+		float flameBoxHH = 0.4f;
+
+		// Check against snowmen
+		for (int m=0; m<SnowmanManager::SNOWMAN_COUNT; m++)
+		{
+			Snowman *snowman = snowmanManager.objects[m];
+
+			if (!snowman->IsAlive())
+				continue;
+
+			if (collides(flameBoxX, flameBoxY, flameBoxZ, flameBoxHW, flameBoxHH,
+				snowman->position->x(), snowman->position->y(), snowman->position->z(), snowman->halfWidth, snowman->halfHeight,
+				0.2f))
+			{
+				if (snowman->HitWithFlame(timeElapsed))
+					score++;
+			}
 		}
 	}
 }

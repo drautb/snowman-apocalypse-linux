@@ -8,7 +8,8 @@
 GLuint Snowman::snowmanTexture = -1;
 float Snowman::halfWidth = 0.45f;
 float Snowman::halfHeight = 0.7f;
-float Snowman::SNOWBALL_DAMAGE_FACTOR = 7.0f;
+float Snowman::SNOWBALL_DAMAGE_FACTOR = 10.0f;
+float Snowman::FLAME_DAMAGE_FACTOR = 25.0f;
 
 Snowman::Snowman(void)
 {
@@ -20,11 +21,12 @@ Snowman::Snowman(void)
 	
 	facingRight = true;
 	
-	scaleX = 1.0f;
+	scaleX = scaleY = 1.0f;
 
 	minScale = 0.9f;
 	maxScale = 1.1f;
 	scaleModifier = 0.2f;
+	meltModifier = 1.5f;
 
 	xVelModifier = 0.1f + (rand() % 100) / 500.0f;
 }
@@ -39,6 +41,8 @@ void Snowman::Respawn()
 	*velocity = Vector455::Zero();
 	*acceleration = Vector455::Zero();
 
+	scaleX = scaleY = 1.0f;
+
 	// Pick a random side
 	facingRight = (rand() % 100) < 49;
 
@@ -49,30 +53,41 @@ void Snowman::Respawn()
 
 	if (facingRight)
 	{
-		position->x() = -2.0f + ((rand() % 100) / 100.0f);	
+		position->x() = -3.0f + ((rand() % 100) / 100.0f);	
 		velocity->x() = xVelModifier;
 	}
 	else
 	{
-		position->x() = 12.0f - ((rand() % 100) / 100.0f);
+		position->x() = 13.0f - ((rand() % 100) / 100.0f);
 		velocity->x() = -xVelModifier;
 	}
 
 	health = MAX_HEALTH;
+	melting = false;
 	alive = true;
 }
 
 void Snowman::Update(float deltaTime)
 {
 	if (health == 0.0f)
+		melting = true;
+
+	if (scaleY <= 0.0f)
 		alive = false;
 
 	if (!alive)
 		return;
 
+	if (melting)
+	{
+		scaleY -= meltModifier * deltaTime;
+		return;
+	}
+
 	scaleX += scaleModifier * deltaTime;
 	if (scaleX > maxScale || scaleX < minScale)
 		switchScaleDirection();
+
 
 	UpdateMovement(deltaTime);
 	healthBar->Update(health);
@@ -87,7 +102,7 @@ void Snowman::Render()
 	glPushMatrix();
 	glTranslatef(position->x(), position->y() - halfHeight, position->z());	
 
-	glScalef(scaleX, 1.0f, 1.0f);
+	glScalef(scaleX, scaleY, 1.0f);
 
 	float xVal = (facingRight ? 1.0f : -1.0f);
 
@@ -107,7 +122,7 @@ void Snowman::Render()
 
 void Snowman::RenderHealthBar()
 {
-	if (!alive)
+	if (!alive || melting)
 		return;
 
 	glMatrixMode(GL_MODELVIEW);
@@ -128,11 +143,28 @@ void Snowman::LoadTextures()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void Snowman::HitWithSnowball()
+bool Snowman::HitWithSnowball()
 {
 	health -= SNOWBALL_DAMAGE_FACTOR;
 
 	clampHealth();
+
+	if (health == 0.0f)
+		return true;
+
+	return false;
+}
+
+bool Snowman::HitWithFlame(float deltaTime)
+{
+	health -= FLAME_DAMAGE_FACTOR * deltaTime;
+	
+	clampHealth();
+
+	if (health == 0.0f)
+		return true;
+
+	return false;
 }
 
 void Snowman::switchScaleDirection()

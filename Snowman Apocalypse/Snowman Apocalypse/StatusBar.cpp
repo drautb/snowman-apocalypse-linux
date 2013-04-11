@@ -32,9 +32,16 @@ void StatusBar::Update(float currentVal)
 {
 	this->currentVal = currentVal;
 	if (this->currentVal < minVal)
-		this->currentVal = minVal;
-
-	calculateColor();
+	{
+		this->currentVal *= -1.0f;
+		currentColor->r() = 1.0f;
+		currentColor->g() = 0.0f;
+		currentColor->b() = 0.0f;
+	}
+	else
+	{
+		calculateColor();
+	}
 }
 
 void StatusBar::Render(float x, float y, float z)

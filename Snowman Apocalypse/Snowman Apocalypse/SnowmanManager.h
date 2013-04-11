@@ -13,6 +13,7 @@ private:
 
 	float								spawnTimer, spawnFrequency;
 	int									leftToSpawn;
+	bool								allDead;
 
 public:
 
@@ -27,5 +28,7 @@ public:
 	void RenderBlips(int x, int y, int width, int height);
 
 	void NextWave(int waveNum);
+
+	bool AllDead()const{return allDead && leftToSpawn == 0;}
 };
 
