@@ -6,7 +6,7 @@ SnowmanManager::SnowmanManager(void)
 	this->Initialize(SNOWMAN_COUNT);
 
 	spawnTimer = 0.0f;
-	spawnFrequency = 2.0f;
+	spawnFrequency = 0.5f;
 
 	leftToSpawn = 0;
 
@@ -37,6 +37,7 @@ void SnowmanManager::UpdateAll(float deltaTime)
 		objects[i]->Update(deltaTime);
 }
 
+/*
 void SnowmanManager::RenderAll()
 {
 	glEnable(GL_BLEND);
@@ -53,6 +54,7 @@ void SnowmanManager::RenderAll()
 	for (int i=0; i<objectCount; i++)
 		objects[i]->RenderHealthBar();
 }
+*/
 
 void SnowmanManager::RenderBlips(int x, int y, int width, int height)
 {

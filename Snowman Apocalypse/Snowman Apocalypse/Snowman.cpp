@@ -4,12 +4,13 @@
 #include <GL\glfw.h>
 
 #include "Snowman.h"
+#include "RenderManager.h"
 
 GLuint Snowman::snowmanTexture = -1;
 float Snowman::halfWidth = 0.45f;
 float Snowman::halfHeight = 0.7f;
 float Snowman::SNOWBALL_DAMAGE_FACTOR = 10.0f;
-float Snowman::FLAME_DAMAGE_FACTOR = 25.0f;
+float Snowman::FLAME_DAMAGE_FACTOR = 30.0f;
 
 Snowman::Snowman(void)
 {
@@ -29,6 +30,8 @@ Snowman::Snowman(void)
 	meltModifier = 1.5f;
 
 	xVelModifier = 0.1f + (rand() % 100) / 500.0f;
+
+	RenderManager::GetInstance()->RegisterObject(this);
 }
 
 Snowman::~Snowman(void)
@@ -106,6 +109,11 @@ void Snowman::Render()
 
 	float xVal = (facingRight ? 1.0f : -1.0f);
 
+	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glBindTexture(GL_TEXTURE_2D, Snowman::snowmanTexture);
+
 	glBegin(GL_TRIANGLE_STRIP);
 		glTexCoord2f(0, 0);
 		glVertex3f(-halfWidth, 0.0f, 0.0f);
@@ -118,6 +126,8 @@ void Snowman::Render()
 	glEnd();
 
 	glPopMatrix();
+
+	RenderHealthBar();
 }
 
 void Snowman::RenderHealthBar()
@@ -128,6 +138,9 @@ void Snowman::RenderHealthBar()
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glTranslatef(position->x(), position->y(), position->z());
+
+	glDisable(GL_BLEND);
+	glDisable(GL_TEXTURE_2D);
 
 	healthBar->Render(0.0f, 0.8f, 0.0f);
 

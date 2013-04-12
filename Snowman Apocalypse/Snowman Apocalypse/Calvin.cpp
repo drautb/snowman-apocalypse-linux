@@ -52,21 +52,21 @@ Calvin::~Calvin(void)
 
 }
 
-float Calvin::CenterX()
+float Calvin::CenterX()const
 {
 	float x = position->x();
 
 	return x;
 }
 
-float Calvin::CenterY()
+float Calvin::CenterY()const
 {
 	float y = position->y() + height / 2.0f;
 
 	return y;
 }
 
-float Calvin::CenterZ()
+float Calvin::CenterZ()const
 {
 	float z = position->z();
 

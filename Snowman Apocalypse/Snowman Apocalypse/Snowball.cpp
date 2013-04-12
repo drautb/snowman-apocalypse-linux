@@ -2,6 +2,7 @@
 
 #include "Snowball.h"
 #include "World.h"
+#include "RenderManager.h"
 
 using namespace std;
 
@@ -12,6 +13,8 @@ int Snowball::currentSnowball = 0;
 Snowball::Snowball(void)
 {
 	alive = false;
+
+	RenderManager::GetInstance()->RegisterObject(this);
 }
 
 
@@ -36,6 +39,10 @@ void Snowball::Render(void)
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glTranslatef(position->x(), position->y(), position->z());
+
+	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, snowballTexture);
 
 	glBegin(GL_TRIANGLE_STRIP);
 		glColor3f(1.0f, 1.0f, 1.0f);
@@ -81,6 +88,7 @@ void Snowball::UpdateAll(float deltaTime)
 		SnowballManager[s]->Update(deltaTime);
 }
 
+/*
 void Snowball::RenderAll(void)
 {
 	glEnable(GL_BLEND);
@@ -90,6 +98,7 @@ void Snowball::RenderAll(void)
 	for (int s=0; s<SNOWBALL_COUNT; s++)
 		SnowballManager[s]->Render();
 }
+*/
 
 void Snowball::Throw(float x, float y, float z, float xVel, float yVel)
 {

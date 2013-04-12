@@ -6,8 +6,9 @@
 #include "MovingObject.h"
 #include "FlameParticleEmitter.h"
 #include "StatusBar.h"
+#include "Renderable.h"
 
-class Calvin : public MovingObject
+class Calvin : public MovingObject, public Renderable
 {
 public:
 
@@ -52,9 +53,11 @@ public:
 	float &y(){return position->y();}
 	float &z(){return position->z();}
 
-	float CenterX();
-	float CenterY();
-	float CenterZ();
+	float CenterX()const;
+	float CenterY()const;
+	float CenterZ()const;
+
+	float Z()const{return CenterZ();}
 
 	float Snowballs()const{return snowballs;}
 	float MaxSnowballs()const{return maxSnowballs;}

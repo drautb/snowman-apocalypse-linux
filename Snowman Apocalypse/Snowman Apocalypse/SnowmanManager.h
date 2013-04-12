@@ -24,7 +24,7 @@ public:
 	~SnowmanManager(void);
 
 	void UpdateAll(float deltaTime);
-	void RenderAll();
+//	void RenderAll();
 	void RenderBlips(int x, int y, int width, int height);
 
 	void NextWave(int waveNum);

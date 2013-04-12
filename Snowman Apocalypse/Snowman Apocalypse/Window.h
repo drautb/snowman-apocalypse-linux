@@ -10,6 +10,7 @@
 #include "cs455Utils.h"
 
 #include "World.h"
+#include "RenderManager.h"
 #include "Calvin.h"
 #include "StatusBar.h"
 #include "Snowman.h"

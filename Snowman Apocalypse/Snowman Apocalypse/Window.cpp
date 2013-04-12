@@ -34,7 +34,7 @@ Window::Window(void)
 	snowballMeter = new StatusBar(0.0f, (float)calvin.MaxSnowballs(), 100.0f, 12.0f);
 
 	score = 0;
-	waveNumber = 0;
+	waveNumber = 50;
 }
 
 Window::~Window(void)
@@ -71,6 +71,8 @@ bool Window::Open(void)
 	Snowball::InitManager();
 	Particle::LoadTextures();
 	Snowman::LoadTextures();
+
+	RenderManager::GetInstance()->RegisterObject(&calvin);
 
 	return true;
 }
@@ -123,7 +125,7 @@ void Window::update()
 	MessageManager::GetInstance()->UpdateAll(timeElapsed);
 
 	//Camera::GetInstance()->PollKeyboard();
-	Camera::GetInstance()->TrackPoint(calvin.x(), 0.9f, 2.5f);
+	Camera::GetInstance()->TrackPoint(calvin.x(), 1.6f, 2.5f);
 	Camera::GetInstance()->Update(timeElapsed);
 }
 
@@ -217,9 +219,12 @@ void Window::redraw(void)
 void Window::renderEnvironment(void)
 {
 	gameWorld.Render();
-	snowmanManager.RenderAll();
-	calvin.Render();
-	Snowball::RenderAll();
+
+	RenderManager::GetInstance()->RenderAll();
+
+	//snowmanManager.RenderAll();
+	//calvin.Render();
+	//Snowball::RenderAll();
 	splashEmitter.RenderAll();
 	steamEmitter.RenderAll();
 }

@@ -22,6 +22,7 @@ private:
 	GLuint				streetTexture;
 	GLuint				sidewalkEnd;
 	GLuint				streetEnd;
+	GLuint				fortTexture;
 
 	SnowfallParticleEmitter		snowfall;
 

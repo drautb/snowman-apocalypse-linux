@@ -4,8 +4,9 @@
 
 #include "MovingObject.h"
 #include "StatusBar.h"
+#include "Renderable.h"
 
-class Snowman : public MovingObject
+class Snowman : public MovingObject, public Renderable
 {
 public: 
 	
@@ -54,6 +55,7 @@ public:
 	float x()const{return position->x();}
 	float y()const{return position->y();}
 	float z()const{return position->z();}
+	float Z()const{return position->z();}
 
 	static void LoadTextures();
 
