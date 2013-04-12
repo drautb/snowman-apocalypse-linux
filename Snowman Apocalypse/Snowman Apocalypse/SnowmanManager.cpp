@@ -71,5 +71,5 @@ void SnowmanManager::RenderBlips(int x, int y, int width, int height)
 
 void SnowmanManager::NextWave(int waveNumber)
 {
-	leftToSpawn = waveNumber + 2;
+	leftToSpawn = waveNumber * 2 + 1;
 }

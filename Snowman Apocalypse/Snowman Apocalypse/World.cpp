@@ -76,24 +76,11 @@ void World::Render()
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex3f(-3.0f, 0.0f, 0.0f);
 		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(-3.0f, 3.0f, 0.0f);
+		glVertex3f(-3.0f, 4.0f, 0.0f);
 		glTexCoord2f(1.0f, 0.0f);
 		glVertex3f(13.0f, 0.0f, 0.0f);
 		glTexCoord2f(1.0f, 1.0f);
-		glVertex3f(13.0f, 3.0f, 0.0f);
-	glEnd();
-
-	// Fort
-	glBindTexture(GL_TEXTURE_2D, fortTexture);
-	glBegin(GL_TRIANGLE_STRIP);
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(4.3f, 0.0f, 0.1f);
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(4.3f, 0.5f, 0.1f);
-		glTexCoord2f(1.0f, 0.0f);
-		glVertex3f(5.7f, 0.0f, 0.1f);
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex3f(5.7f, 0.5f, 0.1f);
+		glVertex3f(13.0f, 4.0f, 0.0f);
 	glEnd();
 
 	snowfall.RenderAll();
@@ -116,12 +103,6 @@ void World::LoadTextures(void)
 	glGenTextures(1, &streetTexture);
 	glBindTexture(GL_TEXTURE_2D, streetTexture);
 	glfwLoadTexture2D("street.tga", GLFW_BUILD_MIPMAPS_BIT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glGenTextures(1, &fortTexture);
-	glBindTexture(GL_TEXTURE_2D, fortTexture);
-	glfwLoadTexture2D("fort.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

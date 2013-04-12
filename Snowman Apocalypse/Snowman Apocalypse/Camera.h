@@ -35,6 +35,8 @@ public:
 	void Update(float deltaTime);
 	void Use(void);
 
+	void SetX(float x){xPos = x;}
+
 private:
 
 	void clampVelocities(void);

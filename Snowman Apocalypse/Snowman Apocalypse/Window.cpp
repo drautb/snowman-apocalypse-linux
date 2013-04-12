@@ -9,6 +9,7 @@
 #include "cs455Utils.h"
 #include "Snowball.h"
 #include "Particle.h"
+#include "Flag.h"
 
 using namespace std;
 using namespace Eigen;
@@ -34,7 +35,14 @@ Window::Window(void)
 	snowballMeter = new StatusBar(0.0f, (float)calvin.MaxSnowballs(), 100.0f, 12.0f);
 
 	score = 0;
-	waveNumber = 50;
+	waveNumber = 0;
+
+	frontFort.z = 0.09f;
+	backFort.z = 0.91f;
+
+	flag.z = 0.5f;
+
+	gameOver = false;
 }
 
 Window::~Window(void)
@@ -71,8 +79,8 @@ bool Window::Open(void)
 	Snowball::InitManager();
 	Particle::LoadTextures();
 	Snowman::LoadTextures();
-
-	RenderManager::GetInstance()->RegisterObject(&calvin);
+	Fort::LoadTextures();
+	Flag::LoadTextures();
 
 	return true;
 }
@@ -108,6 +116,9 @@ void Window::update()
 	}
 
 	updateCollisions();
+
+	if (gameOver)	// Gameplay freezes at Game over!
+		timeElapsed = 0.0f;
 
 	gameWorld.Update(timeElapsed);
 
@@ -193,6 +204,24 @@ void Window::updateCollisions()
 			}
 		}
 	}
+
+	// Check for game over!
+	for (int m=0; m<SnowmanManager::SNOWMAN_COUNT; m++)
+	{
+		Snowman *snowman = snowmanManager.objects[m];
+
+		if (!snowman->IsAlive())
+			continue;
+
+		if (abs(snowman->x() - 5.0f) < 0.01f)
+		{
+			gameOver = true;
+			Camera::GetInstance()->SetX(5.0f);
+			MessageManager::GetInstance()->AddMessage(100, 200, 600, 200, gameOverMsgTexture, 10.0f);
+
+			return;
+		}
+	}
 }
 
 void Window::redraw(void)
@@ -222,9 +251,6 @@ void Window::renderEnvironment(void)
 
 	RenderManager::GetInstance()->RenderAll();
 
-	//snowmanManager.RenderAll();
-	//calvin.Render();
-	//Snowball::RenderAll();
 	splashEmitter.RenderAll();
 	steamEmitter.RenderAll();
 }
@@ -275,19 +301,19 @@ void Window::renderHUD(void)
 	glPointSize(5.0f);
 	glBegin(GL_POINTS);
 		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex2i(590 + (int)((calvin.x() / World::MAX_X) * 200), 10 + (int)((calvin.z() / World::MAX_Z) * 50));
+		glVertex2i(560 + (int)((calvin.x() / World::MAX_X) * 200), 10 + (int)((calvin.z() / World::MAX_Z) * 50));
 		glColor3f(1.0f, 0.0f, 0.0f);
-		snowmanManager.RenderBlips(590, 10, 200, 50);
+		snowmanManager.RenderBlips(560, 10, 200, 50);
 	glEnd();
 
 	// Draw radar box
 	glEnable(GL_BLEND);
 	glBegin(GL_TRIANGLE_STRIP);
 		glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-		glVertex2i(590, 10);
-		glVertex2i(790, 10);
-		glVertex2i(590, 60);
-		glVertex2i(790, 60);
+		glVertex2i(560, 10);
+		glVertex2i(760, 10);
+		glVertex2i(560, 60);
+		glVertex2i(760, 60);
 	glEnd();
 
 	// Draw score and wave number
@@ -358,6 +384,12 @@ void Window::loadTextures()
 	glGenTextures(1, &nextWaveMsgTexture);
 	glBindTexture(GL_TEXTURE_2D, nextWaveMsgTexture);
 	glfwLoadTexture2D("nextwave.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glGenTextures(1, &gameOverMsgTexture);
+	glBindTexture(GL_TEXTURE_2D, gameOverMsgTexture);
+	glfwLoadTexture2D("gameover.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

@@ -9,6 +9,7 @@
 #include "Snowball.h"
 #include "MessageManager.h"
 #include "Window.h"
+#include "RenderManager.h"
 
 Calvin::Calvin(void)
 {
@@ -45,6 +46,8 @@ Calvin::Calvin(void)
 	flameChargeFactor = 10.0f;
 
 	flamethrowing = false;
+
+	RenderManager::GetInstance()->RegisterObject(this);
 }
 
 Calvin::~Calvin(void)

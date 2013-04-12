@@ -73,7 +73,9 @@
   <ItemGroup>
     <ClCompile Include="Calvin.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Flag.cpp" />
     <ClCompile Include="FlameParticleEmitter.cpp" />
+    <ClCompile Include="Fort.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Message.cpp" />
@@ -97,7 +99,9 @@
     <ClInclude Include="Calvin.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="cs455Utils.h" />
+    <ClInclude Include="Flag.h" />
     <ClInclude Include="FlameParticleEmitter.h" />
+    <ClInclude Include="Fort.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Matrix455.h" />
     <ClInclude Include="Message.h" />

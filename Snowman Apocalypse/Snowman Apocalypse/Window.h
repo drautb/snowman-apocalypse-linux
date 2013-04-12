@@ -18,6 +18,8 @@
 #include "SnowSplashEmitter.h"
 #include "SteamEmitter.h"
 #include "MessageManager.h"
+#include "Fort.h"
+#include "Flag.h"
 
 using namespace Eigen;
 
@@ -48,6 +50,9 @@ private:
 	World									gameWorld;
 	Calvin									calvin;
 
+	Fort									frontFort, backFort;
+	Flag									flag;
+
 	SnowmanManager							snowmanManager;
 
 	SnowSplashEmitter						splashEmitter;
@@ -60,7 +65,9 @@ private:
 
 	GLuint									waveTexture, scoreTexture;
 	GLuint									numbersTexture;
-	GLuint									defendMsgTexture, nextWaveMsgTexture;
+	GLuint									defendMsgTexture, nextWaveMsgTexture, gameOverMsgTexture;
+
+	bool									gameOver;
 
 public:
 	/**
