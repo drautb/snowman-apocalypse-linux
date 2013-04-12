@@ -17,6 +17,8 @@ public:
 
 	static MessageManager *GetInstance();
 
+	void Reset();
+
 	void UpdateAll(float deltaTime);
 	void RenderAll();
 

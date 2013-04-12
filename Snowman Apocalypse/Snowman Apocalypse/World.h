@@ -18,8 +18,9 @@ public:
 private:
 
 	GLuint				backgroundTexture;
-	GLuint				sidewalkTexture;
-	GLuint				streetTexture;
+//	GLuint				sidewalkTexture;
+//	GLuint				streetTexture;
+	GLuint				groundTexture;
 
 	SnowfallParticleEmitter		snowfall;
 

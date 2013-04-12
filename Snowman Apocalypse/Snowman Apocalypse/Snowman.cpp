@@ -1,4 +1,5 @@
 #include <iostream>
+#include <set>
 #include <cmath>
 
 #include <GL\glfw.h>
@@ -18,7 +19,7 @@ Snowman::Snowman(void)
 
 	MAX_HEALTH = 50.0f;
 	health = MAX_HEALTH;
-	healthBar = new StatusBar(0.0f, MAX_HEALTH, 0.5f, 0.06f);
+	healthBar = new StatusBar(0.0f, MAX_HEALTH, 0.5f, 0.04f);
 	
 	facingRight = true;
 	
@@ -39,7 +40,7 @@ Snowman::~Snowman(void)
 	SAFE_DELETE(healthBar);
 }
 
-void Snowman::Respawn()
+void Snowman::Respawn(set<float> *zValues)
 {
 	*velocity = Vector455::Zero();
 	*acceleration = Vector455::Zero();
@@ -50,7 +51,11 @@ void Snowman::Respawn()
 	facingRight = (rand() % 100) < 49;
 
 	position->y() = halfHeight;
-	position->z() = (float)(((rand() % 80) + 10) / 100.0f);
+	
+	float z = (float)(((rand() % 80) + 10) / 100.0f);
+	while (zValues->find(z) != zValues->end())
+		z = (float)(((rand() % 80) + 10) / 100.0f);
+	position->z() = z;
 
 	xVelModifier = 0.1f + (rand() % 100) / 500.0f;
 
@@ -151,7 +156,7 @@ void Snowman::LoadTextures()
 {
 	glGenTextures(1, &snowmanTexture);
 	glBindTexture(GL_TEXTURE_2D, snowmanTexture);
-	glfwLoadTexture2D("snowman.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
+	glfwLoadTexture2D("textures/snowman.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

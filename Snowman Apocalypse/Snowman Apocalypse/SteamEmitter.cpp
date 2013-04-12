@@ -52,7 +52,7 @@ void SteamEmitter::Emit(float x, float y, float z, int count)
 		p->colorDecay->a() = 2.0f;
 
 		p->position->x() = x + (((rand() % 100) / 100.0f) * Snowman::halfWidth) * (rand() % 10 > 4 ? 1.0f : -1.0f);
-		p->position->y() = y + (((rand() % 100) / 100.0f) * Snowman::halfHeight);
+		p->position->y() = y + (((rand() % 100) / 100.0f) * Snowman::halfHeight) * (rand() % 10 > 4 ? 1.0f : -1.0f);
 		p->position->z() = z + 0.01f;
 
 		p->velocity->x() = 0.0f;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <set>
+
 #include <GL\glfw.h>
 
 #include "MovingObject.h"
@@ -42,7 +44,7 @@ public:
 	Snowman(void);
 	~Snowman(void);
 
-	void Respawn();
+	void Respawn(set<float> *zValues);
 
 	void Update(float deltaTime);
 	void Render();
@@ -56,6 +58,8 @@ public:
 	float y()const{return position->y();}
 	float z()const{return position->z();}
 	float Z()const{return position->z();}
+
+	void Kill(){alive=false;}
 
 	static void LoadTextures();
 

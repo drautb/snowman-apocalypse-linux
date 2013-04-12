@@ -27,9 +27,23 @@ Calvin::Calvin(void)
 	acceleration->x() = 0.0f;
 	acceleration->y() = -World::GRAVITY;
 
+	flameChargeFactor = 10.0f;
+
+	Reset();
+
+	RenderManager::GetInstance()->RegisterObject(this);
+}
+
+Calvin::~Calvin(void)
+{
+
+}
+
+void Calvin::Reset()
+{
 	x() = 5.0f - width / 2.0f;
 	y() = 0.0f;
-	z() = 0.5f;
+	z() = 0.6f;
 
 	yRot = 0.0f;
 	yRotVel = 1000.0f;
@@ -43,16 +57,8 @@ Calvin::Calvin(void)
 
 	snowballs = maxSnowballs = 50.0f;
 	flameFuel = maxFlameFuel = 100.0f;
-	flameChargeFactor = 10.0f;
 
 	flamethrowing = false;
-
-	RenderManager::GetInstance()->RegisterObject(this);
-}
-
-Calvin::~Calvin(void)
-{
-
 }
 
 float Calvin::CenterX()const
@@ -80,19 +86,19 @@ void Calvin::LoadTextures()
 {
 	glGenTextures(1, &calvinSnowballTexture);
 	glBindTexture(GL_TEXTURE_2D, calvinSnowballTexture);
-	glfwLoadTexture2D("calvin-snowball.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
+	glfwLoadTexture2D("textures/calvin-snowball.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &calvinFlamethrowerTexture);
 	glBindTexture(GL_TEXTURE_2D, calvinFlamethrowerTexture);
-	glfwLoadTexture2D("calvin-flamethrower.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
+	glfwLoadTexture2D("textures/calvin-flamethrower.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &overheatedMsgTexture);
 	glBindTexture(GL_TEXTURE_2D, overheatedMsgTexture);
-	glfwLoadTexture2D("overheated.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
+	glfwLoadTexture2D("textures/overheated.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

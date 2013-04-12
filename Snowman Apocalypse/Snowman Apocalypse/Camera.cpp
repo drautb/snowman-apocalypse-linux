@@ -13,7 +13,7 @@ Camera::Camera(void)
 
 	Zero();
 
-	xRot = 17.0f;
+	xRot = 12.5f;
 	xPos = 5.0f;
 	yPos = 2.0f;
 	zPos = 5.0f;

@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include <GL/glfw.h>
+#include <fmod.hpp>
 
 #include "Window.h"
 #include "Camera.h"
@@ -29,24 +30,50 @@ Window::Window(void)
 {
 	glfwInit();
 
+	FMOD::System_Create(&fmod);
+	fmod->init(32, FMOD_INIT_NORMAL, 0);
+	fmod->createSound("audio/music.mp3", FMOD_LOOP_NORMAL, 0, &music);
+	music->setLoopCount(-1);
+	fmod->playSound(music, 0, false, &musicChannel); 
+	musicChannel->setVolume(0.4f);
+
+	fmod->createSound("audio/alarm.wav", FMOD_LOOP_NORMAL, 0, &alarm);
+	alarm->setLoopCount(-1);
+	fmod->playSound(alarm, 0, true, &alarmChannel);
+
+	fmod->createSound("audio/impact.wav", FMOD_DEFAULT, 0, &impact);
+
+	fmod->createSound("audio/brains.wav", FMOD_DEFAULT, 0, &brains);
+
+	fmod->createSound("audio/pain.wav", FMOD_DEFAULT, 0, &pain);
+
+	fmod->createSound("audio/flamethrower.wav", FMOD_LOOP_NORMAL, 0, &flamethrower);
+	flamethrower->setLoopCount(-1);
+	fmod->playSound(flamethrower, 0, true, &flamethrowerChannel);
+
 	lastTime = timeElapsed = 0.0;
 
 	flameFuelMeter = new StatusBar(0.0f, calvin.MaxFlameFuel(), 100.0f, 12.0f);
 	snowballMeter = new StatusBar(0.0f, (float)calvin.MaxSnowballs(), 100.0f, 12.0f);
-
-	score = 0;
-	waveNumber = 0;
 
 	frontFort.z = 0.09f;
 	backFort.z = 0.91f;
 
 	flag.z = 0.5f;
 
-	gameOver = false;
+	resetGame();
 }
 
 Window::~Window(void)
 {
+	music->release();
+	alarm->release();
+	impact->release();
+	flamethrower->release();
+	pain->release();
+	brains->release();
+	fmod->release();
+
 	Snowball::ShutdownManager();
 
 	SAFE_DELETE(flameFuelMeter);
@@ -82,6 +109,7 @@ bool Window::Open(void)
 	Fort::LoadTextures();
 	Flag::LoadTextures();
 
+
 	return true;
 }
 
@@ -94,6 +122,12 @@ void Window::EnterMainLoop(void)
 
 	while (running)
 	{
+		if (KEY_HIT(GLFW_KEY_ESC))
+			running = false;
+
+		if (gameOver && KEY_HIT(GLFW_KEY_SPACE))
+			resetGame();
+
 		currentTime = glfwGetTime();
 		timeElapsed = (float)(currentTime - lastTime);
 		lastTime = (float)currentTime;
@@ -102,9 +136,23 @@ void Window::EnterMainLoop(void)
 		redraw();
 		renderHUD();
 
+		fmod->update();
+
 		glFlush();
 		glfwSwapBuffers();
 	}
+}
+
+void Window::resetGame()
+{
+	score = 0;
+	waveNumber = 0;
+
+	calvin.Reset();
+	snowmanManager.Reset();
+	MessageManager::GetInstance()->Reset();
+
+	gameOver = false;
 }
 
 void Window::update()
@@ -113,12 +161,16 @@ void Window::update()
 	{
 		snowmanManager.NextWave(waveNumber++);
 		MessageManager::GetInstance()->AddMessage(200, 100, 400, 60, nextWaveMsgTexture, 5.0f);
+		fmod->playSound(brains, 0, false, &brainsChannel);
 	}
 
 	updateCollisions();
 
 	if (gameOver)	// Gameplay freezes at Game over!
+	{
 		timeElapsed = 0.0f;
+		alarmChannel->setPaused(true);
+	}
 
 	gameWorld.Update(timeElapsed);
 
@@ -136,12 +188,16 @@ void Window::update()
 	MessageManager::GetInstance()->UpdateAll(timeElapsed);
 
 	//Camera::GetInstance()->PollKeyboard();
-	Camera::GetInstance()->TrackPoint(calvin.x(), 1.6f, 2.5f);
+	Camera::GetInstance()->TrackPoint(calvin.x(), 1.3f, 2.5f);
 	Camera::GetInstance()->Update(timeElapsed);
 }
 
 void Window::updateCollisions()
 {
+	if (calvin.CenterX() > 4.8f && calvin.CenterX() < 5.2f &&
+		calvin.CenterZ() > 0.45f && calvin.CenterZ() < 0.55f)
+		calvin.FillSnowballs();
+
 	for (int i=0; i<Snowball::SNOWBALL_COUNT; i++)
 	{
 		Snowball *s = Snowball::SnowballManager[i];
@@ -164,8 +220,13 @@ void Window::updateCollisions()
 				s->alive = false;
 				splashEmitter.Emit(s->position->x(), s->position->y(), s->position->z(), 10);
 				if (snowman->HitWithSnowball())
+				{
 					score++;
+					fmod->playSound(pain, 0, false, &painChannel);
+				}
 				calvin.HitSnowmanWithSnowball();
+				fmod->playSound(impact, 0, false, &impactChannel);
+				impactChannel->setVolume(2.0f);
 			}
 		}
 
@@ -174,11 +235,15 @@ void Window::updateCollisions()
 		{
 			s->alive = false;
 			splashEmitter.Emit(s->position->x(), s->position->y(), s->position->z(), 10);
+			fmod->playSound(impact, 0, false, &impactChannel);
+			impactChannel->setVolume(2.0f);
 		}
 	}
 
 	if (calvin.IsFlamethrowing())
 	{
+		flamethrowerChannel->setPaused(false);
+
 		float flameBoxX = calvin.CenterX() + (calvin.IsFacingRight() ? 0.8f : -0.8f);
 		float flameBoxY = calvin.CenterY();
 		float flameBoxZ = calvin.CenterZ();
@@ -198,20 +263,29 @@ void Window::updateCollisions()
 				0.2f))
 			{
 				if (snowman->HitWithFlame(timeElapsed))
+				{
 					score++;
+					fmod->playSound(pain, 0, false, &painChannel);
+				}
 
 				steamEmitter.Emit(snowman->x(), snowman->y(), snowman->z(), 1);
 			}
 		}
 	}
+	else
+		flamethrowerChannel->setPaused(true);
 
 	// Check for game over!
+	alarmChannel->setPaused(true);
 	for (int m=0; m<SnowmanManager::SNOWMAN_COUNT; m++)
 	{
 		Snowman *snowman = snowmanManager.objects[m];
 
 		if (!snowman->IsAlive())
 			continue;
+
+		if (abs(snowman->x() - 5.0f) < 1.5f)
+			alarmChannel->setPaused(false);
 
 		if (abs(snowman->x() - 5.0f) < 0.01f)
 		{
@@ -304,6 +378,11 @@ void Window::renderHUD(void)
 		glVertex2i(560 + (int)((calvin.x() / World::MAX_X) * 200), 10 + (int)((calvin.z() / World::MAX_Z) * 50));
 		glColor3f(1.0f, 0.0f, 0.0f);
 		snowmanManager.RenderBlips(560, 10, 200, 50);
+		
+		// Flag
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex2i(660, 35);
+
 	glEnd();
 
 	// Draw radar box
@@ -359,37 +438,37 @@ void Window::loadTextures()
 {
 	glGenTextures(1, &waveTexture);
 	glBindTexture(GL_TEXTURE_2D, waveTexture);
-	glfwLoadTexture2D("wave.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glfwLoadTexture2D("textures/wave.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &scoreTexture);
 	glBindTexture(GL_TEXTURE_2D, scoreTexture);
-	glfwLoadTexture2D("score.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glfwLoadTexture2D("textures/score.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &numbersTexture);
 	glBindTexture(GL_TEXTURE_2D, numbersTexture);
-	glfwLoadTexture2D("numbers.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glfwLoadTexture2D("textures/numbers.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &defendMsgTexture);
 	glBindTexture(GL_TEXTURE_2D, defendMsgTexture);
-	glfwLoadTexture2D("defend.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glfwLoadTexture2D("textures/defend.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &nextWaveMsgTexture);
 	glBindTexture(GL_TEXTURE_2D, nextWaveMsgTexture);
-	glfwLoadTexture2D("nextwave.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glfwLoadTexture2D("textures/nextwave.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &gameOverMsgTexture);
 	glBindTexture(GL_TEXTURE_2D, gameOverMsgTexture);
-	glfwLoadTexture2D("gameover.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glfwLoadTexture2D("textures/gameover.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

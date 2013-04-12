@@ -1,7 +1,11 @@
 #pragma once
 
+#include <set>
+
 #include "ObjectManager.h"
 #include "Snowman.h"
+
+using namespace std;
 
 class SnowmanManager : public ObjectManager<Snowman>
 {
@@ -15,6 +19,8 @@ private:
 	int									leftToSpawn;
 	bool								allDead;
 
+	set<float>							zValues;
+
 public:
 
 	/**
@@ -23,8 +29,9 @@ public:
 	SnowmanManager(void);
 	~SnowmanManager(void);
 
+	void Reset();
+
 	void UpdateAll(float deltaTime);
-//	void RenderAll();
 	void RenderBlips(int x, int y, int width, int height);
 
 	void NextWave(int waveNum);

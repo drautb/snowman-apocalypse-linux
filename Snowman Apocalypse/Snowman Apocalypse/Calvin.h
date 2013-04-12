@@ -45,6 +45,8 @@ public:
 	Calvin(void);
 	~Calvin(void);
 
+	void Reset();
+
 	void LoadTextures();
 	void Update(float deltaTime);
 	void Render();
@@ -61,6 +63,7 @@ public:
 
 	float Snowballs()const{return snowballs;}
 	float MaxSnowballs()const{return maxSnowballs;}
+	void FillSnowballs(){snowballs = maxSnowballs;}
 	void  HitSnowmanWithSnowball();
 
 	float FlameFuel()const{return flameFuel;}

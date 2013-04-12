@@ -6,11 +6,9 @@ SnowmanManager::SnowmanManager(void)
 	this->Initialize(SNOWMAN_COUNT);
 
 	spawnTimer = 0.0f;
-	spawnFrequency = 0.5f;
+	spawnFrequency = 1.0f;
 
-	leftToSpawn = 0;
-
-	allDead = false;
+	Reset();
 }
 
 
@@ -19,13 +17,25 @@ SnowmanManager::~SnowmanManager(void)
 
 }
 
+void SnowmanManager::Reset()
+{
+	leftToSpawn = 0;
+
+	allDead = false;
+
+	zValues.clear();
+
+	for (int i=0; i<objectCount; i++)
+		objects[i]->Kill();
+}
+
 void SnowmanManager::UpdateAll(float deltaTime)
 {
 	spawnTimer += deltaTime;
 	if (spawnTimer > spawnFrequency)
 	{
 		if (leftToSpawn-- > 0)
-			objects[NextObject()]->Respawn();
+			objects[NextObject()]->Respawn(&zValues);
 
 		spawnTimer = 0.0f;
 
@@ -71,5 +81,6 @@ void SnowmanManager::RenderBlips(int x, int y, int width, int height)
 
 void SnowmanManager::NextWave(int waveNumber)
 {
-	leftToSpawn = waveNumber * 2 + 1;
+	leftToSpawn = waveNumber * 2 + 5;
+	zValues.clear();
 }

@@ -41,7 +41,7 @@ void Fort::LoadTextures()
 {
 	glGenTextures(1, &fortTexture);
 	glBindTexture(GL_TEXTURE_2D, fortTexture);
-	glfwLoadTexture2D("fort.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glfwLoadTexture2D("textures/fort.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

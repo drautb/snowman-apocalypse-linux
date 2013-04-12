@@ -19,6 +19,8 @@ public:
 	Message(void);
 	~Message(void);
 
+	void Kill(){active=false;}
+
 	void Update(float deltaTime);
 	void Render();
 };

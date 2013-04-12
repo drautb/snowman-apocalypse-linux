@@ -18,6 +18,12 @@ MessageManager *MessageManager::GetInstance()
 	return &instance;
 }
 
+void MessageManager::Reset()
+{
+	for (int i=0; i<MESSAGE_COUNT; i++)
+		objects[i]->Kill();
+}
+
 void MessageManager::UpdateAll(float deltaTime)
 {
 	for (int i=0; i<MESSAGE_COUNT; i++)

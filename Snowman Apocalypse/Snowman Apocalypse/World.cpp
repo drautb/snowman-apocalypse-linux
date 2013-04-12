@@ -30,6 +30,21 @@ void World::Render()
 	glMatrixMode(GL_MODELVIEW);
 	glColor3f(1.0f, 1.0f, 1.0f);
 
+	// Ground
+	glBindTexture(GL_TEXTURE_2D, groundTexture);
+	glBegin(GL_TRIANGLE_STRIP);
+		//glColor3f(0.0f, 1.0f, 0.0f);
+		glTexCoord2f(0.0f, 4.0f);
+		glVertex3f(-3.0f, 0.0f, 0.0f);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(-3.0f, 0.0f, 3.0f);
+		glTexCoord2f(16.0f, 4.0f);
+		glVertex3f(13.0f, 0.0f, 0.0f);
+		glTexCoord2f(16.0f, 0.0f);
+		glVertex3f(13.0f, 0.0f, 3.0f);
+	glEnd();
+
+	/*
 	// Render Street
 	glBindTexture(GL_TEXTURE_2D, streetTexture);
 	glBegin(GL_TRIANGLE_STRIP);
@@ -69,6 +84,7 @@ void World::Render()
 		glTexCoord2f(16.0f, 0.0f);
 		glVertex3f(13.0f, 0.0f, 1.0f);
 	glEnd();
+	*/
 
 	// Render Background
 	glBindTexture(GL_TEXTURE_2D, backgroundTexture);
@@ -76,11 +92,11 @@ void World::Render()
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex3f(-3.0f, 0.0f, 0.0f);
 		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(-3.0f, 4.0f, 0.0f);
+		glVertex3f(-3.0f, 6.0f, 0.0f);
 		glTexCoord2f(1.0f, 0.0f);
 		glVertex3f(13.0f, 0.0f, 0.0f);
 		glTexCoord2f(1.0f, 1.0f);
-		glVertex3f(13.0f, 4.0f, 0.0f);
+		glVertex3f(13.0f, 6.0f, 0.0f);
 	glEnd();
 
 	snowfall.RenderAll();
@@ -90,10 +106,11 @@ void World::LoadTextures(void)
 {
 	glGenTextures(1, &backgroundTexture);
 	glBindTexture(GL_TEXTURE_2D, backgroundTexture);
-	glfwLoadTexture2D("forest.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glfwLoadTexture2D("textures/forest.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	/*
 	glGenTextures(1, &sidewalkTexture);
 	glBindTexture(GL_TEXTURE_2D, sidewalkTexture);
 	glfwLoadTexture2D("sidewalk.tga", GLFW_BUILD_MIPMAPS_BIT);
@@ -103,6 +120,13 @@ void World::LoadTextures(void)
 	glGenTextures(1, &streetTexture);
 	glBindTexture(GL_TEXTURE_2D, streetTexture);
 	glfwLoadTexture2D("street.tga", GLFW_BUILD_MIPMAPS_BIT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	*/
+
+	glGenTextures(1, &groundTexture);
+	glBindTexture(GL_TEXTURE_2D, groundTexture);
+	glfwLoadTexture2D("textures/ground.tga", GLFW_BUILD_MIPMAPS_BIT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

@@ -10,6 +10,7 @@ public:
 	float				z;
 
 	static GLuint		flagTexture;
+	static GLuint		pileTexture;
 
 public:
 
