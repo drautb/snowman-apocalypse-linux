@@ -85,7 +85,7 @@ Window::~Window(void)
 
 bool Window::Open(void)
 {
-	if (!glfwOpenWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, 0, 0, 1, 0, GLFW_WINDOW ))
+	if (!glfwOpenWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, 0, 0, 1, 0, GLFW_WINDOW))
 		return false;
 
 	glfwSetWindowSizeCallback(ResizeCallback);
