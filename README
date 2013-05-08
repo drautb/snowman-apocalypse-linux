@@ -6,6 +6,8 @@ Use the mouse to change your direction, and mouse buttons to throw snowballs and
 
 If you get an error message, you may need to download and install the 32-bit Visual Studio 2012 Redistributable.
 
+Keep in mind that the entire game was created in a two-week sprint. I haven't gone back to clean up the code. Please recognize that parts of it are poorly written/designed. I'm well aware. :)
+
 Credits:
 
 “Calvin and Hobbes” is the property of Bill Watterson.
