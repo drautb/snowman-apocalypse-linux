@@ -1,3 +1,11 @@
+########################
+# CMake Files
+########################
+CMakeFiles
+CMakeCache.txt
+Makefile
+*.cmake
+
 #################
 ## Eclipse
 #################
@@ -137,7 +145,7 @@ Desktop.ini
 *.egg
 *.egg-info
 dist
-build
+#build - Keep build directory for CMakeLists file
 eggs
 parts
 bin
