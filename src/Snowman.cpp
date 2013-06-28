@@ -2,7 +2,7 @@
 #include <set>
 #include <cmath>
 
-#include <GL\glfw.h>
+#include <GL/glfw.h>
 
 #include "Snowman.h"
 #include "RenderManager.h"

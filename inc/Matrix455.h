@@ -2,8 +2,8 @@
 
 #include <ostream>
 
-#include <Eigen\Core>
-#include <Eigen\LU>
+#include <eigen3/Eigen/Core>
+#include <eigen3/Eigen/LU>
 
 #include "cs455Utils.h"
 
@@ -23,7 +23,7 @@ public:
 	template<typename OtherDerived>
 	Matrix455(const Eigen::MatrixBase<OtherDerived>& other) : Eigen::Matrix4f(other)
 	{
-		this->Base(other);
+		//this->Base(other);
 	}
 
 	// This method allows you to assign Eigen expressions to MyVectorType

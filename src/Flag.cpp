@@ -1,4 +1,4 @@
-#include <GL\glfw.h>
+#include <GL/glfw.h>
 
 #include "cs455Utils.h"
 #include "Flag.h"

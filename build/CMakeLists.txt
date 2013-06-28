@@ -8,14 +8,9 @@ set(CMAKE_BUILD_TYPE Debug)
 add_definitions("-Wall")
 add_definitions("-std=c++0x")
 
-# OpenGL
-find_package(OpenGL)
-include_directories(${OPENGL_INCLUDE_DIR})
-
-# GLFW?
-
 # FMod?
 
+include_directories(${CMAKE_SOURCE_DIR}/../inc)
 
 add_executable(snowman-apocalypse-linux 
                ${CMAKE_SOURCE_DIR}/../src/main.cpp
@@ -42,6 +37,4 @@ add_executable(snowman-apocalypse-linux
                ${CMAKE_SOURCE_DIR}/../src/Window.cpp
                ${CMAKE_SOURCE_DIR}/../src/World.cpp)
 
-target_link_libraries(snowman-apocalypse-linux 
-                      ${OPENGL_LIBRARIES} 
-                      glfw)
+target_link_libraries(snowman-apocalypse-linux GL GLU glfw)

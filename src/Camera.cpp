@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include <GL\glfw.h>
+#include <GL/glfw.h>
 
 #include "Keyboard.h"
 #include "Camera.h"

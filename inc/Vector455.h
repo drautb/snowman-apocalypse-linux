@@ -4,8 +4,8 @@
 
 #include <GL/glfw.h>
 
-#include <Eigen/Core>
-#include <Eigen/Geometry>
+#include <eigen3/Eigen/Core>
+#include <eigen3/Eigen/Geometry>
 
 #include "cs455Utils.h"
 

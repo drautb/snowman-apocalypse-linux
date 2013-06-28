@@ -4,7 +4,7 @@
 
 #include <stack>
 
-#include <Eigen/Core>
+#include <eigen3/Eigen/Core>
 
 #include "Matrix455.h"
 #include "Vector455.h"

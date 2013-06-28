@@ -2,7 +2,7 @@
 
 #include <set>
 
-#include <GL\glfw.h>
+#include <GL/glfw.h>
 
 #include "MovingObject.h"
 #include "StatusBar.h"

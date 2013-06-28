@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL\glfw.h>
+#include <GL/glfw.h>
 
 void MousePosCallback(int newXPos, int newYPos);
 void MouseButtonCallback(int button, int pressed);

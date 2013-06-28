@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <GL\glfw.h>
+#include <GL/glfw.h>
 
 #include "World.h"
 

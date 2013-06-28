@@ -4,7 +4,7 @@
 
 #include <GL/glfw.h>
 
-#include <fmod.hpp>
+//#include <fmod.hpp>
 
 #include "Keyboard.h"
 #include "Mouse.h"
@@ -71,25 +71,25 @@ private:
 
 	bool									gameOver;
 
-	FMOD::System							*fmod;
+	// FMOD::System							*fmod;
 	
-	FMOD::Sound								*music;
-	FMOD::Channel							*musicChannel;
+	// FMOD::Sound								*music;
+	// FMOD::Channel							*musicChannel;
 	
-	FMOD::Sound								*alarm;
-	FMOD::Channel							*alarmChannel;
+	// FMOD::Sound								*alarm;
+	// FMOD::Channel							*alarmChannel;
 
-	FMOD::Sound								*impact;
-	FMOD::Channel							*impactChannel;
+	// FMOD::Sound								*impact;
+	// FMOD::Channel							*impactChannel;
 
-	FMOD::Sound								*pain;
-	FMOD::Channel							*painChannel;
+	// FMOD::Sound								*pain;
+	// FMOD::Channel							*painChannel;
 
-	FMOD::Sound								*brains;
-	FMOD::Channel							*brainsChannel;
+	// FMOD::Sound								*brains;
+	// FMOD::Channel							*brainsChannel;
 
-	FMOD::Sound								*flamethrower;
-	FMOD::Channel							*flamethrowerChannel;
+	// FMOD::Sound								*flamethrower;
+	// FMOD::Channel							*flamethrowerChannel;
 
 public:
 	/**
