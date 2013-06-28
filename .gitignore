@@ -1,3 +1,6 @@
+# Executable
+bin/snowman-apocalypse-linux
+
 ########################
 # Sublime Files
 ########################
@@ -18,7 +21,7 @@ Makefile
 *.pydevproject
 .project
 .metadata
-bin/
+#bin/
 tmp/
 *.tmp
 *.bak
@@ -153,7 +156,7 @@ dist
 #build - Keep build directory for CMakeLists file
 eggs
 parts
-bin
+#bin
 var
 sdist
 develop-eggs
