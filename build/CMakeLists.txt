@@ -3,12 +3,10 @@ cmake_minimum_required(VERSION 2.8)
 project(snowman-apocalypse-linux)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/../bin)
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 
 add_definitions("-Wall")
 add_definitions("-std=c++0x")
-
-# FMod?
 
 include_directories(${CMAKE_SOURCE_DIR}/../inc)
 
@@ -37,4 +35,9 @@ add_executable(snowman-apocalypse-linux
                ${CMAKE_SOURCE_DIR}/../src/Window.cpp
                ${CMAKE_SOURCE_DIR}/../src/World.cpp)
 
-target_link_libraries(snowman-apocalypse-linux GL GLU glfw)
+target_link_libraries(snowman-apocalypse-linux GL GLU glfw fmodex64)
+
+# This is just a test to make sure I understand how to push things to a remote
+# branch. I'll commit this to my master branch locally, but then push to a 
+# different branch on GitHub. Then we'll see if I can setup a pull request Fort
+# myself. :)
