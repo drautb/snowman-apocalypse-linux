@@ -10,8 +10,6 @@ add_definitions("-std=c++0x")
 
 include_directories(${CMAKE_SOURCE_DIR}/../inc)
 
-#find_library(FMOD_LIBRARY fmodex64 /usr/lib/FMOD/libfmodex64.so)
-
 add_executable(snowman-apocalypse-linux 
                ${CMAKE_SOURCE_DIR}/../src/main.cpp
                ${CMAKE_SOURCE_DIR}/../src/Calvin.cpp
@@ -37,5 +35,4 @@ add_executable(snowman-apocalypse-linux
                ${CMAKE_SOURCE_DIR}/../src/Window.cpp
                ${CMAKE_SOURCE_DIR}/../src/World.cpp)
 
-#target_link_libraries(snowman-apocalypse-linux GL GLU glfw ${FMOD_LIBRARY})
 target_link_libraries(snowman-apocalypse-linux GL GLU glfw /usr/lib/FMOD/libfmodex64.so)
