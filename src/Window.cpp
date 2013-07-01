@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include <GL/glfw.h>
-// #include <fmod.hpp>
+#include <FMOD/fmod.hpp>
 
 #include "Window.h"
 #include "Camera.h"
@@ -31,26 +31,26 @@ Window::Window(void)
 	glfwInit();
 	glfwSwapInterval(0);
 
-	// FMOD::System_Create(&fmod);
-	// fmod->init(32, FMOD_INIT_NORMAL, 0);
-	// fmod->createSound("audio/music.mp3", FMOD_LOOP_NORMAL, 0, &music);
-	// music->setLoopCount(-1);
-	// fmod->playSound(music, 0, false, &musicChannel); 
-	// musicChannel->setVolume(0.4f);
+	FMOD::System_Create(&fmod);
+	fmod->init(32, FMOD_INIT_NORMAL, 0);
+	fmod->createSound("audio/music.mp3", FMOD_LOOP_NORMAL, 0, &music);
+	music->setLoopCount(-1);
+	fmod->playSound(FMOD_CHANNEL_FREE, music, false, &musicChannel); 
+	musicChannel->setVolume(0.4f);
 
-	// fmod->createSound("audio/alarm.wav", FMOD_LOOP_NORMAL, 0, &alarm);
-	// alarm->setLoopCount(-1);
-	// fmod->playSound(alarm, 0, true, &alarmChannel);
+	fmod->createSound("audio/alarm.wav", FMOD_LOOP_NORMAL, 0, &alarm);
+	alarm->setLoopCount(-1);
+	fmod->playSound(FMOD_CHANNEL_FREE, alarm, true, &alarmChannel);
 
-	// fmod->createSound("audio/impact.wav", FMOD_DEFAULT, 0, &impact);
+	fmod->createSound("audio/impact.wav", FMOD_DEFAULT, 0, &impact);
 
-	// fmod->createSound("audio/brains.wav", FMOD_DEFAULT, 0, &brains);
+	fmod->createSound("audio/brains.wav", FMOD_DEFAULT, 0, &brains);
 
-	// fmod->createSound("audio/pain.wav", FMOD_DEFAULT, 0, &pain);
+	fmod->createSound("audio/pain.wav", FMOD_DEFAULT, 0, &pain);
 
-	// fmod->createSound("audio/flamethrower.wav", FMOD_LOOP_NORMAL, 0, &flamethrower);
-	// flamethrower->setLoopCount(-1);
-	// fmod->playSound(flamethrower, 0, true, &flamethrowerChannel);
+	fmod->createSound("audio/flamethrower.wav", FMOD_LOOP_NORMAL, 0, &flamethrower);
+	flamethrower->setLoopCount(-1);
+	fmod->playSound(FMOD_CHANNEL_FREE, flamethrower, true, &flamethrowerChannel);
 
 	lastTime = timeElapsed = 0.0;
 
@@ -67,13 +67,13 @@ Window::Window(void)
 
 Window::~Window(void)
 {
-	// music->release();
-	// alarm->release();
-	// impact->release();
-	// flamethrower->release();
-	// pain->release();
-	// brains->release();
-	// fmod->release();
+	music->release();
+	alarm->release();
+	impact->release();
+	flamethrower->release();
+	pain->release();
+	brains->release();
+	fmod->release();
 
 	Snowball::ShutdownManager();
 
@@ -137,7 +137,7 @@ void Window::EnterMainLoop(void)
 		redraw();
 		renderHUD();
 
-		// fmod->update();
+		fmod->update();
 
 		glFlush();
 		glfwSwapBuffers();
@@ -162,7 +162,7 @@ void Window::update()
 	{
 		snowmanManager.NextWave(waveNumber++);
 		MessageManager::GetInstance()->AddMessage(200, 100, 400, 60, nextWaveMsgTexture, 5.0f);
-		// fmod->playSound(brains, 0, false, &brainsChannel);
+		fmod->playSound(FMOD_CHANNEL_FREE, brains, false, &brainsChannel);
 	}
 
 	updateCollisions();
@@ -170,7 +170,7 @@ void Window::update()
 	if (gameOver)	// Gameplay freezes at Game over!
 	{
 		timeElapsed = 0.0f;
-		// alarmChannel->setPaused(true);
+		alarmChannel->setPaused(true);
 	}
 
 	gameWorld.Update(timeElapsed);
@@ -223,11 +223,11 @@ void Window::updateCollisions()
 				if (snowman->HitWithSnowball())
 				{
 					score++;
-					// fmod->playSound(pain, 0, false, &painChannel);
+					fmod->playSound(FMOD_CHANNEL_FREE, pain, false, &painChannel);
 				}
 				calvin.HitSnowmanWithSnowball();
-				// fmod->playSound(impact, 0, false, &impactChannel);
-				// impactChannel->setVolume(2.0f);
+				fmod->playSound(FMOD_CHANNEL_FREE, impact, false, &impactChannel);
+				impactChannel->setVolume(2.0f);
 			}
 		}
 
@@ -236,14 +236,14 @@ void Window::updateCollisions()
 		{
 			s->alive = false;
 			splashEmitter.Emit(s->position->x(), s->position->y(), s->position->z(), 10);
-			// fmod->playSound(impact, 0, false, &impactChannel);
-			// impactChannel->setVolume(2.0f);
+			fmod->playSound(FMOD_CHANNEL_FREE, impact, false, &impactChannel);
+			impactChannel->setVolume(2.0f);
 		}
 	}
 
 	if (calvin.IsFlamethrowing())
 	{
-		// flamethrowerChannel->setPaused(false);
+		flamethrowerChannel->setPaused(false);
 
 		float flameBoxX = calvin.CenterX() + (calvin.IsFacingRight() ? 0.8f : -0.8f);
 		float flameBoxY = calvin.CenterY();
@@ -266,7 +266,7 @@ void Window::updateCollisions()
 				if (snowman->HitWithFlame(timeElapsed))
 				{
 					score++;
-					// fmod->playSound(pain, 0, false, &painChannel);
+					fmod->playSound(FMOD_CHANNEL_FREE, pain, false, &painChannel);
 				}
 
 				steamEmitter.Emit(snowman->x(), snowman->y(), snowman->z(), 1);
@@ -274,10 +274,10 @@ void Window::updateCollisions()
 		}
 	}
 	else
-		// flamethrowerChannel->setPaused(true);
+		flamethrowerChannel->setPaused(true);
 
 	// Check for game over!
-	// alarmChannel->setPaused(true);
+	alarmChannel->setPaused(true);
 	for (int m=0; m<SnowmanManager::SNOWMAN_COUNT; m++)
 	{
 		Snowman *snowman = snowmanManager.objects[m];
@@ -286,7 +286,7 @@ void Window::updateCollisions()
 			continue;
 
 		if (abs(snowman->x() - 5.0f) < 1.5f)
-			// alarmChannel->setPaused(false);
+			alarmChannel->setPaused(false);
 
 		if (abs(snowman->x() - 5.0f) < 0.01f)
 		{
