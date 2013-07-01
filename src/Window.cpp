@@ -29,6 +29,7 @@ void GLFWCALL ResizeCallback(int width, int height)
 Window::Window(void)
 {
 	glfwInit();
+	glfwSwapInterval(0);
 
 	// FMOD::System_Create(&fmod);
 	// fmod->init(32, FMOD_INIT_NORMAL, 0);
@@ -85,7 +86,7 @@ Window::~Window(void)
 
 bool Window::Open(void)
 {
-	if (!glfwOpenWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, 0, 0, 1, 0, GLFW_WINDOW))
+	if (!glfwOpenWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 8, 8, 8, 8, 1, 0, GLFW_WINDOW))
 		return false;
 
 	glfwSetWindowSizeCallback(ResizeCallback);
