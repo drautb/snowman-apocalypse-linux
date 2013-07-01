@@ -39,8 +39,3 @@ add_executable(snowman-apocalypse-linux
 
 #target_link_libraries(snowman-apocalypse-linux GL GLU glfw ${FMOD_LIBRARY})
 target_link_libraries(snowman-apocalypse-linux GL GLU glfw /usr/lib/FMOD/libfmodex64.so)
-
-# This is just a test to make sure I understand how to push things to a remote
-# branch. I'll commit this to my master branch locally, but then push to a 
-# different branch on GitHub. Then we'll see if I can setup a pull request Fort
-# myself. :)

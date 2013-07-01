@@ -21,7 +21,7 @@ public:
 public:
 
 	Particle(void);
-	~Particle(void);
+	virtual ~Particle(void);
 
 	void Update(float deltaTime);
 
