@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
 #include "MovingObject.h"
 #include "Renderable.h"

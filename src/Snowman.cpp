@@ -2,7 +2,7 @@
 #include <set>
 #include <cmath>
 
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
 #include "Snowman.h"
 #include "RenderManager.h"
@@ -156,7 +156,7 @@ void Snowman::LoadTextures()
 {
 	glGenTextures(1, &snowmanTexture);
 	glBindTexture(GL_TEXTURE_2D, snowmanTexture);
-	glfwLoadTexture2D("textures/snowman.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
+	LoadTexture2D("textures/snowman.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

@@ -1,4 +1,5 @@
 
+#include "RenderManager.h"
 #include "Particle.h"
 #include "cs455Utils.h"
 
@@ -68,7 +69,7 @@ void Particle::LoadTextures(void)
 {
 	glGenTextures(1, &particleTexture);
 	glBindTexture(GL_TEXTURE_2D, particleTexture);
-	glfwLoadTexture2D("textures/particle.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
+	LoadTexture2D("textures/particle.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

@@ -84,23 +84,11 @@ float Calvin::CenterZ()const
 
 void Calvin::LoadTextures()
 {
-	glGenTextures(1, &calvinSnowballTexture);
-	glBindTexture(GL_TEXTURE_2D, calvinSnowballTexture);
-	glfwLoadTexture2D("textures/calvin-snowball.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	calvinSnowballTexture = LoadTexture2D("textures/calvin-snowball.tga");
 
-	glGenTextures(1, &calvinFlamethrowerTexture);
-	glBindTexture(GL_TEXTURE_2D, calvinFlamethrowerTexture);
-	glfwLoadTexture2D("textures/calvin-flamethrower.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glGenTextures(1, &overheatedMsgTexture);
-	glBindTexture(GL_TEXTURE_2D, overheatedMsgTexture);
-	glfwLoadTexture2D("textures/overheated.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	calvinFlamethrowerTexture = LoadTexture2D("textures/calvin-flamethrower.tga");
+	
+	overheatedMsgTexture = LoadTexture2D("textures/overheated.tga");
 }
 
 void Calvin::Update(float deltaTime)

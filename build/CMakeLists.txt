@@ -8,13 +8,18 @@ set(CMAKE_BUILD_TYPE Release)
 add_definitions("-Wall")
 add_definitions("-std=c++0x")
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GLFW glfw3)
+
+find_package(DevIL)
+
 include_directories(${CMAKE_SOURCE_DIR}/../inc)
 
 add_executable(snowman-apocalypse-linux 
                ${CMAKE_SOURCE_DIR}/../src/main.cpp
                ${CMAKE_SOURCE_DIR}/../src/Calvin.cpp
                ${CMAKE_SOURCE_DIR}/../src/Camera.cpp
-               ${CMAKE_SOURCE_DIR}/../src/Flag.cpp
+               ${CMAKE_SOURCE_DIR}/../src/Flag.cpp;
                ${CMAKE_SOURCE_DIR}/../src/FlameParticleEmitter.cpp
                ${CMAKE_SOURCE_DIR}/../src/Fort.cpp
                ${CMAKE_SOURCE_DIR}/../src/Keyboard.cpp
@@ -35,4 +40,15 @@ add_executable(snowman-apocalypse-linux
                ${CMAKE_SOURCE_DIR}/../src/Window.cpp
                ${CMAKE_SOURCE_DIR}/../src/World.cpp)
 
-target_link_libraries(snowman-apocalypse-linux GL GLU glfw /usr/lib/FMOD/libfmodex64.so)
+# get_cmake_property(_variableNames VARIABLES)
+# foreach (_variableName ${_variableNames})
+#     message(STATUS "${_variableName}=${${_variableName}}")
+# endforeach()
+
+target_link_libraries(snowman-apocalypse-linux 
+                      GLU
+                      ${GLFW_STATIC_LIBRARIES} 
+                      ${IL_LIBRARIES}
+                      ${ILU_LIBRARIES}
+                      ${ILUT_LIBRARIES}
+                      /usr/local/lib/FMOD/libfmodex64.so)

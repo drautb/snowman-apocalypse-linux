@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
 #include <FMOD/fmod.hpp>
 
@@ -25,8 +25,6 @@
 
 using namespace Eigen;
 
-void GLFWCALL ResizeCallback(int width, int height);
-
 /**
  * Window class
  * Encapsulates all the glfw window setup for this program
@@ -43,6 +41,11 @@ public:
 	const static int WINDOW_HEIGHT			= 600;
 
 private:
+
+	/**
+	 * GLFW Window Handle
+	 */
+	GLFWwindow*								glfwWindow;
 
 	/**
 	 * Other Members

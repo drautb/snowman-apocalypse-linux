@@ -1,8 +1,8 @@
 #pragma once
 
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
-void KeyboardCallback(int, int);
+void KeyboardCallback(GLFWwindow* window, int, int, int, int);
 
 class Keyboard
 {

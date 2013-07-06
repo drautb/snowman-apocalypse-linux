@@ -1,4 +1,4 @@
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
 #include "cs455Utils.h"
 #include "StatusBar.h"

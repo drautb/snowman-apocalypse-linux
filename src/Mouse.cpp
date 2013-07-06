@@ -1,12 +1,14 @@
+#include <GLFW/glfw3.h>
+
 #include "Mouse.h"
 
-void MousePosCallback(int newXPos, int newYPos)
+void MousePosCallback(GLFWwindow* window, double newXPos, double newYPos)
 {
-	Mouse::GetInstance().xPos = newXPos;
-	Mouse::GetInstance().yPos = newYPos;
+	Mouse::GetInstance().xPos = (int)newXPos;
+	Mouse::GetInstance().yPos = (int)newYPos;
 }
 
-void MouseButtonCallback(int button, int pressed)
+void MouseButtonCallback(GLFWwindow* window, int button, int pressed, int idk)
 {
 	Mouse::GetInstance().buttons[button] = pressed;
 	Mouse::GetInstance().buttonLocks[button] = pressed > 0 ? true : false;

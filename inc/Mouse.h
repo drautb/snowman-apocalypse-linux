@@ -1,9 +1,9 @@
 #pragma once
 
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
-void MousePosCallback(int newXPos, int newYPos);
-void MouseButtonCallback(int button, int pressed);
+void MousePosCallback(GLFWwindow* window, double newXPos, double newYPos);
+void MouseButtonCallback(GLFWwindow* window, int button, int pressed, int);
 
 class Mouse
 {

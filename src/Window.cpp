@@ -2,7 +2,8 @@
 #include <string>
 #include <cmath>
 
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
+#include <GL/glu.h>
 #include <FMOD/fmod.hpp>
 
 #include "Window.h"
@@ -14,17 +15,6 @@
 
 using namespace std;
 using namespace Eigen;
-
-void GLFWCALL ResizeCallback(int width, int height)
-{
-	glViewport(0, 0, width, height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	return;
-}
 
 Window::Window(void)
 {
@@ -86,14 +76,15 @@ Window::~Window(void)
 
 bool Window::Open(void)
 {
-	if (!glfwOpenWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 8, 8, 8, 8, 1, 0, GLFW_WINDOW))
+	glfwWindow = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Snowman Apocalypse!", NULL, NULL);
+	if (!glfwWindow)
 		return false;
 
-	glfwSetWindowSizeCallback(ResizeCallback);
-	glfwSetKeyCallback(KeyboardCallback);
-	glfwSetMousePosCallback(MousePosCallback);
-	glfwSetMouseButtonCallback(MouseButtonCallback);
-	glfwSetWindowTitle("Snowman Apocalypse");
+	glfwMakeContextCurrent(glfwWindow);
+
+	glfwSetKeyCallback(glfwWindow, KeyboardCallback);
+	glfwSetCursorPosCallback(glfwWindow, MousePosCallback);
+	glfwSetMouseButtonCallback(glfwWindow, MouseButtonCallback);
 
 	glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
 
@@ -116,15 +107,14 @@ bool Window::Open(void)
 
 void Window::EnterMainLoop(void)
 {
-	bool running = true;
 	double currentTime = 0.0;
 
 	MessageManager::GetInstance()->AddMessage(100, 440, 600, 60, defendMsgTexture, 10.0f);
 
-	while (running)
+	while (!glfwWindowShouldClose(glfwWindow))
 	{
-		if (KEY_HIT(GLFW_KEY_ESC))
-			running = false;
+		if (KEY_HIT(GLFW_KEY_ESCAPE))
+	        glfwSetWindowShouldClose(glfwWindow, GL_TRUE);
 
 		if (gameOver && KEY_HIT(GLFW_KEY_SPACE))
 			resetGame();
@@ -140,7 +130,8 @@ void Window::EnterMainLoop(void)
 		fmod->update();
 
 		glFlush();
-		glfwSwapBuffers();
+		glfwSwapBuffers(glfwWindow);
+		glfwPollEvents();
 	}
 }
 
@@ -439,37 +430,37 @@ void Window::loadTextures()
 {
 	glGenTextures(1, &waveTexture);
 	glBindTexture(GL_TEXTURE_2D, waveTexture);
-	glfwLoadTexture2D("textures/wave.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/wave.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &scoreTexture);
 	glBindTexture(GL_TEXTURE_2D, scoreTexture);
-	glfwLoadTexture2D("textures/score.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/score.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &numbersTexture);
 	glBindTexture(GL_TEXTURE_2D, numbersTexture);
-	glfwLoadTexture2D("textures/numbers.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/numbers.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &defendMsgTexture);
 	glBindTexture(GL_TEXTURE_2D, defendMsgTexture);
-	glfwLoadTexture2D("textures/defend.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/defend.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &nextWaveMsgTexture);
 	glBindTexture(GL_TEXTURE_2D, nextWaveMsgTexture);
-	glfwLoadTexture2D("textures/nextwave.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/nextwave.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &gameOverMsgTexture);
 	glBindTexture(GL_TEXTURE_2D, gameOverMsgTexture);
-	glfwLoadTexture2D("textures/gameover.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/gameover.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

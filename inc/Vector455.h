@@ -2,7 +2,7 @@
 
 #include <ostream>
 
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>

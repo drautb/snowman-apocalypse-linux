@@ -1,4 +1,4 @@
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
 #include "cs455Utils.h"
 #include "Fort.h"
@@ -41,7 +41,7 @@ void Fort::LoadTextures()
 {
 	glGenTextures(1, &fortTexture);
 	glBindTexture(GL_TEXTURE_2D, fortTexture);
-	glfwLoadTexture2D("textures/fort.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/fort.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

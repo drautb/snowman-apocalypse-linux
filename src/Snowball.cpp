@@ -61,11 +61,7 @@ void Snowball::Render(void)
 
 void Snowball::LoadTextures(void)
 {
-	glGenTextures(1, &snowballTexture);
-	glBindTexture(GL_TEXTURE_2D, snowballTexture);
-	glfwLoadTexture2D("textures/snowball.tga", GLFW_BUILD_MIPMAPS_BIT | GL_RGBA);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	snowballTexture = LoadTexture2D("textures/snowball.tga");
 }
 
 void Snowball::InitManager(void)

@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
 #include "Keyboard.h"
 #include "Camera.h"
@@ -49,9 +49,9 @@ void Camera::PollKeyboard()
 	else if (KEY_DOWN(GLFW_KEY_UP))
 		yPosVel += velModifier;
 
-	if (KEY_DOWN(GLFW_KEY_PAGEUP))
+	if (KEY_DOWN(GLFW_KEY_PAGE_UP))
 		zPosVel -= velModifier;
-	else if (KEY_DOWN(GLFW_KEY_PAGEDOWN))
+	else if (KEY_DOWN(GLFW_KEY_PAGE_DOWN))
 		zPosVel += velModifier;
 }
 

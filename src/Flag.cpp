@@ -1,4 +1,4 @@
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
 #include "cs455Utils.h"
 #include "Flag.h"
@@ -54,13 +54,13 @@ void Flag::LoadTextures()
 {
 	glGenTextures(1, &flagTexture);
 	glBindTexture(GL_TEXTURE_2D, flagTexture);
-	glfwLoadTexture2D("textures/flag.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/flag.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &pileTexture);
 	glBindTexture(GL_TEXTURE_2D, pileTexture);
-	glfwLoadTexture2D("textures/pile.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/pile.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

@@ -1,12 +1,16 @@
 #pragma once
 
 #include <vector>
+#include <string>
+#include <GLFW/glfw3.h>
 
 #include "Renderable.h"
 
 using namespace std;
 
 bool sortPredicate(const Renderable *lhs, const Renderable *rhs);
+
+GLuint LoadTexture2D(const char* filename);
 
 class RenderManager
 {

@@ -1,8 +1,9 @@
 #include <iostream>
 
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
 #include "World.h"
+#include "RenderManager.h"
 
 const float World::GRAVITY = 25.0f;
 const float World::MIN_X = 0.0f;
@@ -106,27 +107,27 @@ void World::LoadTextures(void)
 {
 	glGenTextures(1, &backgroundTexture);
 	glBindTexture(GL_TEXTURE_2D, backgroundTexture);
-	glfwLoadTexture2D("textures/forest.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/forest.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	/*
 	glGenTextures(1, &sidewalkTexture);
 	glBindTexture(GL_TEXTURE_2D, sidewalkTexture);
-	glfwLoadTexture2D("sidewalk.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("sidewalk.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glGenTextures(1, &streetTexture);
 	glBindTexture(GL_TEXTURE_2D, streetTexture);
-	glfwLoadTexture2D("street.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("street.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	*/
 
 	glGenTextures(1, &groundTexture);
 	glBindTexture(GL_TEXTURE_2D, groundTexture);
-	glfwLoadTexture2D("textures/ground.tga", GLFW_BUILD_MIPMAPS_BIT);
+	LoadTexture2D("textures/ground.tga");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
