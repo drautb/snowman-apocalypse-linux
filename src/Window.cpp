@@ -179,7 +179,7 @@ void Window::update()
 
 	MessageManager::GetInstance()->UpdateAll(timeElapsed);
 
-	//Camera::GetInstance()->PollKeyboard();
+	Camera::GetInstance()->PollKeyboard();
 	Camera::GetInstance()->TrackPoint(calvin.x(), 1.3f, 2.5f);
 	Camera::GetInstance()->Update(timeElapsed);
 }
@@ -428,41 +428,17 @@ void Window::renderHUD(void)
 
 void Window::loadTextures()
 {
-	glGenTextures(1, &waveTexture);
-	glBindTexture(GL_TEXTURE_2D, waveTexture);
-	LoadTexture2D("textures/wave.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	waveTexture = LoadTexture2D("textures/wave.tga");
 
-	glGenTextures(1, &scoreTexture);
-	glBindTexture(GL_TEXTURE_2D, scoreTexture);
-	LoadTexture2D("textures/score.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	scoreTexture = LoadTexture2D("textures/score.tga");
 
-	glGenTextures(1, &numbersTexture);
-	glBindTexture(GL_TEXTURE_2D, numbersTexture);
-	LoadTexture2D("textures/numbers.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glGenTextures(1, &defendMsgTexture);
-	glBindTexture(GL_TEXTURE_2D, defendMsgTexture);
-	LoadTexture2D("textures/defend.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glGenTextures(1, &nextWaveMsgTexture);
-	glBindTexture(GL_TEXTURE_2D, nextWaveMsgTexture);
-	LoadTexture2D("textures/nextwave.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glGenTextures(1, &gameOverMsgTexture);
-	glBindTexture(GL_TEXTURE_2D, gameOverMsgTexture);
-	LoadTexture2D("textures/gameover.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	numbersTexture = LoadTexture2D("textures/numbers.tga");
+	
+	defendMsgTexture = LoadTexture2D("textures/defend.tga");
+	
+	nextWaveMsgTexture = LoadTexture2D("textures/nextwave.tga");
+	
+	gameOverMsgTexture = LoadTexture2D("textures/gameover.tga");
 }
 
 void Window::printNumber(int number, int x, int y, int digitWidth, int digitHeight)

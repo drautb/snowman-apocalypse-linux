@@ -39,9 +39,5 @@ void Fort::Render()
 
 void Fort::LoadTextures()
 {
-	glGenTextures(1, &fortTexture);
-	glBindTexture(GL_TEXTURE_2D, fortTexture);
-	LoadTexture2D("textures/fort.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	fortTexture = LoadTexture2D("textures/fort.tga"); 
 }

@@ -1,10 +1,16 @@
+# Releases
+release/*
+
 # Executable
 bin/snowman-apocalypse-linux
+
+# Weird file that started showing up...
+libpeerconnection.log
 
 ########################
 # Sublime Files
 ########################
-*.sublime-*
+*.sublime-workspace
 
 ########################
 # CMake Files

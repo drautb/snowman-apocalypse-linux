@@ -44,49 +44,7 @@ void World::Render()
 		glTexCoord2f(16.0f, 0.0f);
 		glVertex3f(13.0f, 0.0f, 3.0f);
 	glEnd();
-
-	/*
-	// Render Street
-	glBindTexture(GL_TEXTURE_2D, streetTexture);
-	glBegin(GL_TRIANGLE_STRIP);
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(-2.0f, -0.2f, 1.0f);
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(-2.0f, -0.2f, 2.0f);
-		glTexCoord2f(14.0f, 1.0f);
-		glVertex3f(12.0f, -0.2f, 1.0f);
-		glTexCoord2f(14.0f, 0.0f);
-		glVertex3f(12.0f, -0.2f, 2.0f);
-		glColor3f(1.0f, 1.0f, 1.0f);
-	glEnd();
-
-	// Render Curbside
-	glBindTexture(GL_TEXTURE_2D, sidewalkTexture);
-	glBegin(GL_TRIANGLE_STRIP);
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(-3.0f, 0.0f, 1.0f);
-		glTexCoord2f(0.0f, 0.05f);
-		glVertex3f(-3.0f, -0.2f, 1.0f);
-		glTexCoord2f(16.0f, 0.0f);
-		glVertex3f(13.0f, 0.0f, 1.0f);
-		glTexCoord2f(16.0f, 0.05f);
-		glVertex3f(13.0f, -0.2f, 1.0f);
-	glEnd();
-
-	// Render Sidewalk
-	glBegin(GL_TRIANGLE_STRIP);
-		//glColor3f(0.0f, 1.0f, 0.0f);
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(-3.0f, 0.0f, 0.0f);
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(-3.0f, 0.0f, 1.0f);
-		glTexCoord2f(16.0f, 1.0f);
-		glVertex3f(13.0f, 0.0f, 0.0f);
-		glTexCoord2f(16.0f, 0.0f);
-		glVertex3f(13.0f, 0.0f, 1.0f);
-	glEnd();
-	*/
-
+	
 	// Render Background
 	glBindTexture(GL_TEXTURE_2D, backgroundTexture);
 	glBegin(GL_TRIANGLE_STRIP);
@@ -105,29 +63,7 @@ void World::Render()
 
 void World::LoadTextures(void)
 {
-	glGenTextures(1, &backgroundTexture);
-	glBindTexture(GL_TEXTURE_2D, backgroundTexture);
-	LoadTexture2D("textures/forest.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	backgroundTexture = LoadTexture2D("textures/forest.tga");
 
-	/*
-	glGenTextures(1, &sidewalkTexture);
-	glBindTexture(GL_TEXTURE_2D, sidewalkTexture);
-	LoadTexture2D("sidewalk.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glGenTextures(1, &streetTexture);
-	glBindTexture(GL_TEXTURE_2D, streetTexture);
-	LoadTexture2D("street.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	*/
-
-	glGenTextures(1, &groundTexture);
-	glBindTexture(GL_TEXTURE_2D, groundTexture);
-	LoadTexture2D("textures/ground.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	groundTexture = LoadTexture2D("textures/ground.tga");
 }

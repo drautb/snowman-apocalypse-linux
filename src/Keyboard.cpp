@@ -1,11 +1,15 @@
+#include <iostream>
+
 #include <GLFW/glfw3.h>
 
 #include "Keyboard.h"
 
+using namespace std;
+
 void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	Keyboard::GetInstance().keys[key] = action == GLFW_PRESS;
-	Keyboard::GetInstance().keyLocks[key] = (action == GLFW_PRESS) ? true : false;
+	Keyboard::GetInstance().keys[key] = action == GLFW_PRESS || action == GLFW_REPEAT;
+	Keyboard::GetInstance().keyLocks[key] = (action == GLFW_PRESS || action == GLFW_REPEAT) ? true : false;
 }
 
 Keyboard::Keyboard(void)

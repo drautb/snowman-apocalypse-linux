@@ -52,15 +52,7 @@ void Flag::Render()
 
 void Flag::LoadTextures()
 {
-	glGenTextures(1, &flagTexture);
-	glBindTexture(GL_TEXTURE_2D, flagTexture);
-	LoadTexture2D("textures/flag.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	flagTexture = LoadTexture2D("textures/flag.tga");
 
-	glGenTextures(1, &pileTexture);
-	glBindTexture(GL_TEXTURE_2D, pileTexture);
-	LoadTexture2D("textures/pile.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	pileTexture = LoadTexture2D("textures/pile.tga");
 }

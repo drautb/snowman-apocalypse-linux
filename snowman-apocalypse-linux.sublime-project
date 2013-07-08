@@ -1,0 +1,32 @@
+{
+	"folders":
+	[
+		{
+			"path": "/home/drautb/Dropbox/GitHub/snowman-apocalypse-linux"
+		},
+        {
+            "path": "/home/drautb/Downloads/fmodapi44416linux",
+            "name": "FMOD",
+            "file_exclude_patterns": []
+        }
+	],
+    "build_systems":
+    [
+        {
+            "cmd":
+            [
+                "make"
+            ],
+            "name": "Build snowman-apocalypse-linux",
+            "working_dir": "${project_path}/build/",
+
+            "variants": [
+                {
+                    "name": "Run Snowman Apocalypse",
+                    "cmd": ["optirun", "./snowman-apocalypse-linux"],
+                    "working_dir": "${project_path}/bin/"
+                }
+            ]
+        }
+    ]
+}
