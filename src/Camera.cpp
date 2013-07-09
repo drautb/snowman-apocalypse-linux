@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cmath>
 
 #include <GLFW/glfw3.h>
@@ -57,6 +58,11 @@ void Camera::PollKeyboard()
 
 void Camera::TrackPoint(float x, float y, float z)
 {
+	/*
+	Why did I write this method to directly update the position,
+	rather than adjusting the velocity?
+	- To keep the camera ahead of regular movement? 
+	 */
 	if (abs(xPos - x) > 0.1f)
 	{
 		if (xPos < x) xPos += velModifier;

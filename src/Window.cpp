@@ -179,7 +179,7 @@ void Window::update()
 
 	MessageManager::GetInstance()->UpdateAll(timeElapsed);
 
-	Camera::GetInstance()->PollKeyboard();
+	// Camera::GetInstance()->PollKeyboard();
 	Camera::GetInstance()->TrackPoint(calvin.x(), 1.3f, 2.5f);
 	Camera::GetInstance()->Update(timeElapsed);
 }
