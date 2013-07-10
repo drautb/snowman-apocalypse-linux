@@ -8,7 +8,7 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/../bin/${CMAKE_BUILD_TYPE})
 
 add_definitions("-Wall")
-add_definitions("-std=c++0x")
+add_definitions("-std=c++11")
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GLFW glfw3)

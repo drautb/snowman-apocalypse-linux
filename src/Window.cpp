@@ -18,6 +18,12 @@ using namespace Eigen;
 
 Window::Window(void)
 {
+	/**
+	 * FIXME: Running the executable with optirun causes this output:
+	 * 		[VGL] NOTICE: Pixel format of 2D X server does not match pixel format of
+	 * 		[VGL]    Pbuffer.  Disabling PBO readback.
+	 */
+
 	glfwInit();
 	glfwSwapInterval(0);
 
