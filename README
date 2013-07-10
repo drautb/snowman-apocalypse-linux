@@ -1,21 +1,17 @@
-This semester I took a computer graphics course. For our final project, we had the option of creating either a game, a ray-tracer  an n-dimensional display system, or anything else that we could convince the TA to give us credit for. I opted to fulfill a childhood dream and create a game inspired by Calvin and Hobbes. 
-
-You play as our fearless hero, Calvin,   tasked with defending his snow fort from the “Attack of the Deranged Mutant Killer Monster Snow Goons!” You have only snowballs with which to fight. And a flamethrower. Of course Calvin gets his flamethrower.  See how long you can last before the killer snow goons overwhelm you and invade the fort!
+This is a Linux port of my Snowman Apocalypse game. (https://github.com/drautb/snowman-apocalypse)
 
 Use the mouse to change your direction, and mouse buttons to throw snowballs and jump. Use W, A, S, D to move around and Q to switch to your flamethrower.
-
-If you get an error message, you may need to download and install the 32-bit Visual Studio 2012 Redistributable.
-
-Keep in mind that the entire game was created in a two-week sprint. I haven't gone back to clean up the code. Please recognize that parts of it are poorly written/designed. I'm well aware. :)
 
 Credits:
 
 “Calvin and Hobbes” is the property of Bill Watterson.
 
-Audio engine: FMOD Sound System by Firelight Technologies
+Audio engine: FMODEx Sound System by Firelight Technologies
 
 Music: “A Different Journey” by EntropyMusic.com
 
-OpenGL/Visual Studio 2012
+Graphics: GLFW 3.0/OpenGL
+
+Built on Ubuntu 13.04 using GCC 4.8 and CMake to generate makefiles. 
 
 Enjoy!
