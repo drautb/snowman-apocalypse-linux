@@ -1,5 +1,5 @@
 # Releases
-release/*
+*.tar
 
 # Executable
 bin/snowman-apocalypse-linux
