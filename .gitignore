@@ -1,15 +1,5 @@
-# Releases
-*.tar
-!release/tar-new-release.sh
-
-# Executable
-bin/snowman-apocalypse-linux
-
-# Weird file that started showing up...
-libpeerconnection.log
-
 ########################
-# Sublime Files
+# Sublime File
 ########################
 *.sublime-workspace
 
