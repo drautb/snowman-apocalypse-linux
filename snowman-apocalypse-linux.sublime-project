@@ -30,6 +30,16 @@
                     "name": "Run Snowman Apocalypse",
                     "cmd": ["optirun", "./snowman-apocalypse-linux"],
                     "working_dir": "${project_path}/bin/Release/"
+                },
+                {
+                    "name": "Debug Snowman Apocalypse - No Optimus",
+                    "cmd": ["./snowman-apocalypse-linux"],
+                    "working_dir": "${project_path}/bin/Debug/"
+                },
+                {
+                    "name": "Run Snowman Apocalypse - No Optimus",
+                    "cmd": ["./snowman-apocalypse-linux"],
+                    "working_dir": "${project_path}/bin/Release/"
                 }
             ]
         }
