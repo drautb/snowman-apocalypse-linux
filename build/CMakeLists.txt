@@ -17,6 +17,9 @@ add_definitions("-std=c++11")           # Use the 2011 C++ Standard
 # add_definitions("-DMACOSX")
 add_definitions("-DLINUX")
 
+# Tell DevIL to use OpenGL
+add_definitions("-DILUT_USE_OPENGL")
+
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GLFW glfw3)
 

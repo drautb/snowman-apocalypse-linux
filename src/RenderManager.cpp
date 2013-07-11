@@ -1,5 +1,3 @@
-#define ILUT_USE_OPENGL
-
 #include <list>
 #include <algorithm>
 #include <string>
