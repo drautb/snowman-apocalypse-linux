@@ -67,9 +67,5 @@ void Particle::Render()
 
 void Particle::LoadTextures(void)
 {
-	glGenTextures(1, &particleTexture);
-	glBindTexture(GL_TEXTURE_2D, particleTexture);
-	LoadTexture2D("textures/particle.tga");
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	particleTexture = LoadTexture2D("textures/particle.tga");
 }
