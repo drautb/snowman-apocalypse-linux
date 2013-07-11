@@ -2,13 +2,20 @@ cmake_minimum_required(VERSION 2.8)
 
 project(snowman-apocalypse-linux)
 
-set(CMAKE_BUILD_TYPE Debug)
-# set(CMAKE_BUILD_TYPE Release)
+# set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/../bin/${CMAKE_BUILD_TYPE})
 
-add_definitions("-Wall")
-add_definitions("-std=c++11")
+add_definitions("-Wall")                # Give ALL the warnings!
+add_definitions("-Werror")              # Treat ALL The warnings as errors
+add_definitions("-pedantic-errors")     # Only allow standard-compliant code
+add_definitions("-std=c++11")           # Use the 2011 C++ Standard
+
+# Select Platform
+# add_definitions("-DWINDOWS")
+# add_definitions("-DMACOSX")
+add_definitions("-DLINUX")
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GLFW glfw3)
